@@ -1,2 +1,2 @@
 # MyFirstPer
-First created repository
+This is my first repository I've made
