@@ -13,9 +13,9 @@ html, body {
     font-size: 14px;
 }
 
-.b1 { border: px solid rgba(58, 72, 237, 1); border-radius: 5px; } box-shadow: 0px 0px 64px 6px #888888; }
-.b2 { border: px solid rgb(238, 255, 34); box-shadow: 0px 0px 32px 4px black; }
-.b3 { border: px ridge gray; }
+.b1 { border: 0px solid rgba(58, 72, 237, 1); border-radius: 5px; } box-shadow: 0px 0px 64px 6px #888888; }
+.b2 { border: 0px solid rgb(238, 255, 34); box-shadow: 0px 0px 32px 4px black; }
+.b3 { border: 0px ridge gray; }
 .b4 { border: 4px ridge gray; }
 .div {
     margin: 0px;

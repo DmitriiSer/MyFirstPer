@@ -27,17 +27,15 @@
             $("img").each(function(number, element) { $(".scrollable").append(element); });
         }
         scrollable = $(".scrollable");
-        var outOfScrollable;
-        //check if there is an element with a class 'out-of-scrollable'. If not then create one
-        if ( !$(".out-of-scrollable").length ) { obj.prepend("<div class='out-of-scrollable'></div>"); }
-        outOfScrollable = $(".out-of-scrollable");
-        // set an arrow to outOfScrollable div
-        outOfScrollable.html("&#x27bb");
+        var arrow;
+        //check if there is an element with a class 'arrow'. If not then create one
+        if ( !$(".arrow").length ) { obj.prepend("<div class='arrow'></div>"); }
+        arrow = $(".arrow");
+        // set unicode arrow symbol to arrow div
+        arrow.html("&#x27bb");
         // check if there is a canvas object. If not then create one
         var canvas = $("carousel canvas");
-        log(canvas.width());
         if ( !$("carousel canvas").length ) { obj.prepend("<canvas style='display: none'></canvas>"); }        
-        log(canvas.width());
         // set variables for images
         var img = $(".carousel img");
         var imgCount = $(".carousel img").length;        
@@ -52,7 +50,6 @@
         //
         // Set width to viewport (.carousel) and exclude borders
         obj.width(viewportWidth);
-        obj.width(innerWidth(obj) - border(obj).left - border(obj).right);
         // Set widths to scrollable area (.scrollable) and exclude borders    
         //   If image width contains percantage than translate it to px
         if (imageWidth.indexOf("%") != -1) {
@@ -77,7 +74,17 @@
         obj.on("mouseup", carouselMouseUp);
         obj.on("mouseleave", carouselMouseLeave);
         obj.on("mousemove", carouselMouseMove);
-        /*obj.on("dblclick", function(){ log("dblclick"); });//carouselMouseDblClick);*/
+        //----Scroll
+        $(window).scroll(function() {
+            $(this).scrollTop(0);
+        });
+        obj.on("scroll", function(e) {
+            console.log("this.scrollWidth: " + this.scrollWidth);
+            console.log("this.offsetWidth: " + this.offsetWidth);
+            this.scrollLeft = 0;
+        });
+        //----Window resizes
+        $(window).on("resize", function() { obj.width(viewportWidth); obj.height(viewportHeight); });
 
         // Carousel event handlers
         function carouselMouseDown(e) {
@@ -96,7 +103,7 @@
                 //TODO: show/hide blended scrollbar
                 mouseDown = false;
                 // Hide the arrow
-                outOfScrollable.velocity("stop").velocity({ left: 0, opacity: 0 }, 0 );
+                arrow.velocity("stop").velocity({ left: 0, opacity: 0 }, "slow" );
                 // Move scrollable area back to the borders
                 backToBorders();
                 //
@@ -139,41 +146,43 @@
                     else { moveDirectionAfterMouseDown = 0; }
                     // Calculate a shift from the position where the mouse was pressed
                     var shift =  e.pageX - mouseDownDragPosition;
+                    // Check if arrow is not appeared then make it visible
+                    if (arrow.css("display") == "none") {
+                        arrow.css("display", "table");
+                    }
+                    var arrowShift = null;
+                    var arrowDirection = 0;
                     // Check if scrollable area has crossed the left border then show the arrow
                     if ( left(scrollable) > innerLeft(obj) ) {
-                        var fontSize = outOfScrollable.css('font-size').replace("px","");
-                        //Change css properties of the arrow while moving the scrollable area
-                        outOfScrollable.css({
-                            display : "table",
-                            left: left(scrollable) - innerLeft(obj) - fontSize,
-                            opacity: "+=0.01"
-                        });
-                        outOfScrollable.velocity("stop").velocity({ rotateZ: "0deg)" }, 0);
+                        var fontSize = arrow.css('font-size').replace("px","");
+                        arrowDirection = 0;
+                        arrowShift = left(scrollable) - innerLeft(obj) - fontSize;
                     }
                     // Check if scrollable area has crossed the right border
                     else if ( right(scrollable) < innerRight(obj) ) {
-                        var fontSize = outOfScrollable.css('font-size').replace("px","");
-                        outOfScrollable.css({
-                            display : "table",
-                            left: right(scrollable) - innerLeft(obj),
-                            opacity: "+=0.01"
-                        });                    
-                        //outOfScrollable.width("-=" + 1);
-                        outOfScrollable.velocity("stop").velocity({ rotateZ: "180deg)" }, 0);
+                        arrowDirection = 180;
+                        arrowShift = right(scrollable) - innerLeft(obj);
+                    }
+                    if (arrowShift != null) {                        
+                        //Change left property of the arrow while moving the scrollable area
+                        arrow.css("left", arrowShift);
+                        // if the arrow is not animating then animate it to show
+                        if (!arrow.hasClass("velocity-animating") && arrow.css("opacity") < 1) {
+                            arrow.velocity("stop").velocity({ rotateZ: arrowDirection + "deg" }, 0).velocity({ opacity: 1 }, "slow");
+                        }
                     }
                     // Drag scrollable area
                     scrollable.offset({left : shift});
+                    //obj[0].scrollLeft = 100;
+                    console.log(obj[0].scrollLeft);
                     // Change currentImg
                     currentImgFract = (innerLeft(obj) - shift) / width(img);
                     currentImg = Math.floor(currentImgFract);
-                    //Check if a carousel is cyclic
+                    //TODO: make it cyclic
+                    //Check if a carousel is cyclic                    
                     if (cyclic) {
                         //log();
                         //log(innerRight(scrollable));
-                        var x = 0;
-                        if (x==0) {
-                            //log("yuck");
-                        }
                         /*
                         log("in cyclic", 1);
                         //Prepend the last image before image #1
@@ -267,13 +276,9 @@
             currentImgFract = (innerLeft(obj) - innerLeft(scrollable)) / width(img);
             currentImg = Math.round(currentImgFract);
         }
-        var c;
-        $.Velocity.Easings.myCustomEasing = function (p, opts, tweenDelta) {
-            return 0.5 - Math.cos( p * Math.PI ) / 2;
-        };
         function goTo(where, speed) {
             //log("goTo");
-            if (!speed) { speed = "fast"; }
+            if (!speed) { speed = "slow"; }
             if (!where) { where = "next"; }
             var shift;
             if (where == "next") {
@@ -287,7 +292,7 @@
             // if current image is not the first one and the last one
             if ((currentImg < imgCount - 1 && where == "next") ||
                 (currentImg > 0 && where == "prev")) {
-                scrollable.velocity("stop").velocity({ left : shift }, speed, /*[100, 10],*/ afterGoPrevOrNext);
+                scrollable.velocity("stop").velocity({ left : shift }, speed, [500, 20], afterGoPrevOrNext);
             }
         }
         /*function createScrollbar() {

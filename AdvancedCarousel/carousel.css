@@ -21,10 +21,11 @@
     /*overflow: hidden;*/
     z-index: 10;
 }
-.out-of-scrollable {
+.arrow {
     position: relative;
     /*position: absolute;*/
     display: none;
+    /*display: table;*/
     /*border: 5px groove lightgray;*/
     font-size: 50px;
     color: rgba(255, 255, 255, 0.8);
