@@ -1,2 +1,4 @@
-# MyFirstPer
-This is my first repository I've made
+# Web projects
+This repository contains my own web projects		
+1) HTML5 + CSS3 + JavaScript / jQuer		
+• AdvancedCarousel
