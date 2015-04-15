@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="carousel.css">
+        <script type="text/javascript" src="scripts/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="scripts/velocity.min.js"></script>
+        <script type="text/javascript" src="carousel.js"></script>
+        <script>
+            //ready function
+            $(function() {                
+                $("#carousel1").carousel({ width: "70%", height: 300 });//, dragable : false });
+                //$("#carousel2").carousel({ width: "70%", height: 300 });
+                //$("div").carousel({ width: "70%", height: 300 });
+                //TODO Try to add a new carousel
+                //var n = $(".carousel").html();
+                //$("body").append("<div id='id2'>" + n + "</div>");
+            });
+        </script>
+    </head>
+    <body>
+        <div class="console"></div>
+        <h1 style="margin: auto; text-align: center">This is the example of simple carousel</h1>        
+        <div id="carousel1" class="b1">
+            <!--<canvas style="display: none"></canvas>-->
+            <!--<div class="out-of-scrollable"></div>-->
+            <div class="left-press"></div>
+            <div class="nav b4"></div>
+            <!--<div class="scrollable b2">-->
+            <img class="b3" src="images/Seychelles-Beach1.jpg"/>
+            <img class="b3" src="images/Seychelles-Beach2.jpg"/>
+            <img class="b3" src="images/Seychelles-Beach3.jpg"/>
+            <img class="b3" src="images/Seychelles-Beach4.jpg"/>
+            <!--</div>-->
+        </div>
+        <p>Text after the carousel</p>        
+        <!--<div id="carousel2" class="b1">
+            <img src="images/Seychelles-Beach1.jpg"/>
+            <img src="images/Seychelles-Beach2.jpg"/>
+        </div>-->
+    </body>
+</html>
