@@ -1,4 +1,4 @@
-.carousel, .scrollable, .out-of-scrollable, .carousel img {
+.carousel, .scrollable, .arrow, .carousel img {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -11,22 +11,35 @@
     position: relative;
     display: flex;
     background: url(images/bg.JPG);
-    /*-webkit-filter: blur(1px);*/
-    /*border: 8px solid rgba(95, 95, 212, 0.6);*/
-    right: 0; /* default width (100%) of viewport throught 'right' */
-    height: 200px; /* default height of viewport. set exactly to one image height */
+    /* default width (100%) of viewport throught 'right' */
+    /*right: 0;*/
     margin: 0 auto;
-    overflow-y: hidden;
+    overflow: hidden;
     overflow-x: scroll;
-    /*overflow: hidden;*/
     z-index: 10;
 }
+/* Carousel's scrollable area */
+.scrollable {
+    position: absolute;    
+    display: inline-table;
+    /*width: 100%;*/
+    height: 100%;
+    z-index: 12;
+}
+/* Carousel's separate images*/
+.carousel img {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    float: left;
+    z-index: 13;
+}
+/* Carousel's arrow symbol */
 .arrow {
     position: relative;
     /*position: absolute;*/
     display: none;
-    /*display: table;*/
-    /*border: 5px groove lightgray;*/
     font-size: 50px;
     color: rgba(255, 255, 255, 0.8);
     opacity: 0;
@@ -35,29 +48,9 @@
     text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.3), -1px -1px 2px rgba(255, 255, 255, 0.3);
     z-index: 11;
 }
-/* Carousel's scrollable area */
-.scrollable {
-    position: absolute;    
-    display: inline-table;
-    /*    border: 16px solid rgba(0, 128, 0, 0.8);*/
-    /*default width of scrollable area. set exactly to all image sizes */
-    width: 300%;
-    height: 100%;
-    z-index: 12;
-}
-/* Carousel's separate images*/
-.carousel img {
-    position: relative;
-    display: inline-block;
-    /*border: 32px ridge lightgray;*/
-    width: 100%; /*500px; /* default width of img. set exactly to one image width */
-    height: 100%;
-    float: left;
-    z-index: 13;
-}
 /* TODO: Carousel's navigation pan */
 .nav {
-    /*    position: relative;*/
+    /*position: relative;*/
     position: absolute;
     display: none;
     bottom: 0;
@@ -71,20 +64,15 @@
 .carousel::-webkit-scrollbar {
     height: 18px;
     background: rgba(255, 255, 255, 0.2);
-    /*background: white;*/
     /*box-shadow: inset 0px 3px 16px 4px black;*/
 }
 .carousel::-webkit-scrollbar-thumb {
-    /*border: 1px solid black;*/
-    border-bottom: 5px solid cornflowerblue;
+    background: cornflowerblue;
+    /*border-bottom: 5px solid cornflowerblue;*/
     /*background: rgba(255, 255, 255, 0.3);
     background: url('images/scroll-bg.gif.png') 0 repeat-x;
     background-position: center top;*/
-/*    box-shadow: 0px 0px 8px black;*/
-/*    width: 200px;*/
-/*    height: 20px;    */
-/*    border-radius: 50% 50% 50% 50% / 70% 70% 40% 40%;*/
-/*    border-radius: 50% / 15% 15% 0% 0%;*/
+    /*box-shadow: 0px 0px 8px black;
+    border-radius: 50% 50% 50% 50% / 70% 70% 40% 40%;
+    border-radius: 50% / 15% 15% 0% 0%;*/
 }
-.carousel::-webkit-scrollbar-track {}
-.carousel::-webkit-scrollbar-track-piece {}
