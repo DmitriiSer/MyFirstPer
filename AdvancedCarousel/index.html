@@ -9,11 +9,20 @@
         <script type="text/javascript" src="carousel.js"></script>
         <script>
             //ready function
-            $(function() {                
-                $("#carousel1").carousel({ width: "70%", height: 300 });//, dragable : false });
-                //$("#carousel2").carousel({ width: "70%", height: 300 });
-                //$("div").carousel({ width: "70%", height: 300 });
-                //TODO Try to add a new carousel
+            $(function() {
+                //test a carousel
+                var w = "60%",
+                    h = "200",
+                    s = true,
+                    ss = "18",
+                    d = true;
+                //$("#carousel1").carousel({ width: w, height: h, scrollbar: s, dragable: d });
+                $("#carousel1").carousel({ width: w, height: h, scrollbar: s });
+                //$("#carousel1").carousel({ width: w, height: h });
+
+                //$("#carousel2").carousel({ width: w, height: h });
+                //$("div").carousel({ width: w, height: h });
+                //TODO: Try to add a new carousel
                 //var n = $(".carousel").html();
                 //$("body").append("<div id='id2'>" + n + "</div>");
             });
@@ -21,7 +30,7 @@
     </head>
     <body>
         <div class="console"></div>
-        <h1 style="margin: auto; text-align: center">This is the example of simple carousel</h1>        
+        <!--<h1 style="margin: auto; text-align: center">This is the example of simple carousel</h1>-->
         <div id="carousel1" class="b1">
             <!--<canvas style="display: none"></canvas>-->
             <!--<div class="arrow"></div>-->
@@ -34,36 +43,9 @@
             <img class="b3" src="images/Seychelles-Beach4.jpg"/>
             <!--</div>-->
         </div>
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <p>Text after the carousel</p>        
-        <!--<div id="carousel2" class="b1">
-<img src="images/Seychelles-Beach1.jpg"/>
-<img src="images/Seychelles-Beach2.jpg"/>
-</div>-->
+        <!--<div id="carousel2" class="b1">-->
+        <!--<img src="images/Seychelles-Beach1.jpg"/>-->
+        <!--<img src="images/Seychelles-Beach2.jpg"/>-->
+        <!--</div>-->
     </body>
 </html>

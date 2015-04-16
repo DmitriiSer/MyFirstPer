@@ -3,18 +3,19 @@
 
 (function( $ ) {
     $.fn.carousel = function(params) {
-        //return;
         // Properties
         var viewportWidth = params.width;
         var viewportHeight = params.height;
         var imageWidth = params.imageWidth;
         var dragable = params.dragable;
+        var scrollbar = params.scrollbar;
         var cyclic = params.cyclic;
         // Default values for properties
         if (!viewportWidth) { viewportWidth = "100%"; }
         if (!viewportHeight) { viewportHeight = 200; }
         if (!imageWidth) { imageWidth = "100%"; }
         if (dragable === undefined || dragable === null) { dragable = true; }
+        if (scrollbar === undefined || scrollbar === null) { scrollbar = false; }
         if (cyclic === undefined || cyclic === null) { cyclic = true; }
         // Variables
         var obj = this;
@@ -27,8 +28,11 @@
             $("img").each(function(number, element) { $(".scrollable").append(element); });
         }
         scrollable = $(".scrollable");
-        var arrow;
+        // show a scrollbar if scrollbar == true
+        if (scrollbar) { obj.css({ "overflow-y": "hidden", "overflow-x": "scroll" }); }
+        else { obj.css("overflow", "hidden"); }        
         //check if there is an element with a class 'arrow'. If not then create one
+        var arrow;
         if ( !$(".arrow").length ) { obj.prepend("<div class='arrow'></div>"); }
         arrow = $(".arrow");
         // set unicode arrow symbol to arrow div
@@ -41,7 +45,7 @@
         var imgCount = $(".carousel img").length;        
         //
         var mouseDown = false;
-        var mouseMoved = false;
+        var dragged = false;
         var mouseDownDragPosition;
         var currentImg = 0;
         var currentImgFract = 0.0;
@@ -50,6 +54,12 @@
         //
         // Set width to viewport (.carousel) and exclude borders
         obj.width(viewportWidth);
+        // Set heigth to viewport (.carousel)
+        if (viewportHeight.indexOf("%") != -1) {
+            obj.height($(window).height() * viewportHeight.replace("%", "") / 100);
+        } else {
+            obj.height(viewportHeight);
+        }
         // Set widths to scrollable area (.scrollable) and exclude borders    
         //   If image width contains percantage than translate it to px
         if (imageWidth.indexOf("%") != -1) {
@@ -61,8 +71,6 @@
         scrollable.width(imgCount * (imageWidth + border(img).left + border(img).right) + 1);
         // Set widths to images (.carousel img)
         img.width(imageWidth);
-        // Set heigth to viewport (.carousel)
-        obj.height(viewportHeight);
         // Set heigth to images (.carousel img)
         img.height(innerHeight(scrollable) - border(img).top - border(img).bottom);
         //
@@ -70,43 +78,46 @@
         //----Prevent dragging        
         obj.on("dragstart", function (e) { e.preventDefault(); });
         //----Mouse events
-        obj.on("mousedown", carouselMouseDown);
+        obj.on("mousedown", function(e) {
+            mouseDown = true; if (dragable) { mouseDownDragPosition = e.pageX - left(scrollable); }
+        });
         obj.on("mouseup", carouselMouseUp);
-        obj.on("mouseleave", carouselMouseLeave);
-        obj.on("mousemove", carouselMouseMove);
-        //----Scroll
-        $(window).scroll(function() {
-            $(this).scrollTop(0);
+        obj.on("mouseleave", function() {
+            mouseDown = false;
+            //RETURN: backToBorders();
         });
-        obj.on("scroll", function(e) {
-            console.log("this.scrollWidth: " + this.scrollWidth);
-            console.log("this.offsetWidth: " + this.offsetWidth);
-            this.scrollLeft = 0;
-        });
+        //----Dragging and scrolling
+        obj.on("mousemove scroll", carouselMouseMove);
+        /*obj.on("scroll", function(e) {
+            log("this.scrollWidth: " + this.scrollWidth, 1);
+            log("this.offsetWidth: " + this.offsetWidth);
+            //this.scrollLeft = 0;
+        });*/
         //----Window resizes
-        $(window).on("resize", function() { obj.width(viewportWidth); obj.height(viewportHeight); });
+        $(window).on("resize", function() {
+            obj.width(viewportWidth);
+            if (viewportHeight.indexOf("%") != -1) {
+                obj.height($(window).height() * viewportHeight.replace("%", "") / 100);
+            } else {
+                obj.height(viewportHeight);
+            }
+        });
 
         // Carousel event handlers
-        function carouselMouseDown(e) {
-            try {
-                //log("carouselMouseDown", 1);
-                mouseDown = true;
-                if (dragable) {
-                    mouseDownDragPosition = e.pageX - left(scrollable);
-                }
-            } catch(e) {
-                console.error("carouselMouseDown" + e);
-            }
-        }
         function carouselMouseUp(e) {
+            //console.log("carouselMouseUp");
             try {
                 //TODO: show/hide blended scrollbar
+                // Check if arrow is visible then hide it
+                if (arrow.css("display") == "table") {
+                    arrow.velocity("stop")
+                        .velocity({ left: 0, opacity: 0 }, "slow", function (){ arrow.css("display", "none"); });
+                }
+                // Move scrollable area back to the borders if it was moved
+                //RETURN:
+                if (mouseDown && dragged) { backToBorders(); /*dragged = false;*/ }
                 mouseDown = false;
-                // Hide the arrow
-                arrow.velocity("stop").velocity({ left: 0, opacity: 0 }, "slow" );
-                // Move scrollable area back to the borders
-                backToBorders();
-                //
+                moveDirectionAfterMouseDown = 0;
                 // Set up a clicking area width in %
                 var clickingAreaWidth = 0.20;
                 // Calculate ending position for left clicknig area to go to prev elem
@@ -116,36 +127,48 @@
                 // If cursor is located on the area that allows to move to the previous image
                 if ((innerLeft(obj) < e.pageX) && (e.pageX < leftClickingAreaEnds)) {
                     // check if mouve is still moving and leaving viewport's area
-                    if (mouseMoved) { mouseMoved = false; return; }
+                    if (dragged) { dragged = false; return; }
                     // check if button was pressed
                     if (e.which > 0) { goTo("prev"); }
                 }
                 // If cursor is located on the area that allows to move to the next image
                 if ((rightClickingAreaStarts < e.pageX) && (e.pageX < innerRight(obj))) {
                     // check if mouve is still moving and leaving viewport's area
-                    if (mouseMoved) { mouseMoved = false; return; }
+                    if (dragged) { dragged = false; return; }
                     // check if button was pressed
                     if (e.which > 0) { goTo("next"); }
                 }
             } catch(e) {
                 console.error("carouselMouseUpAndLeave" + e);
             }
-        }
-        function carouselMouseLeave(e) {
-            mouseDown = false;
-            backToBorders();
-        }
+        }        
         function carouselMouseMove(e) {
-            try {
+            try {                
                 // Check if scrollable area has grabbed
                 if (mouseDown) {
-                    mouseMoved = true;
+                    dragged = true;
+                    log("carouselMouseMove::drag", 1); log(scrollable.offset().left);                    
                     moveDirectionAfterMouseDown = e.pageX - left(scrollable) - mouseDownDragPosition;
                     if (moveDirectionAfterMouseDown < 0) { moveDirectionAfterMouseDown = -1; }
                     else if (moveDirectionAfterMouseDown > 0) { moveDirectionAfterMouseDown = 1; }
                     else { moveDirectionAfterMouseDown = 0; }
                     // Calculate a shift from the position where the mouse was pressed
-                    var shift =  e.pageX - mouseDownDragPosition;
+                    var shift = e.pageX - mouseDownDragPosition;
+                    var scrollShift = 213 - shift;
+                    //TODO: make scrollbar work
+                    // Drag scrollable area
+                    //console.log(shift);
+
+                    //scrollable.offset({ left : shift });
+                    
+                    //obj[0].scrollLeft = scrollShift;
+
+                    //console.log("" + scrollable.offset().left);
+                    //console.log(obj[0].scrollLeft);
+                    //obj.scrollLeft(-shift);
+
+                    // Change scrollbar position
+                    //obj.scrollLeft(left(obj) - shift);
                     // Check if arrow is not appeared then make it visible
                     if (arrow.css("display") == "none") {
                         arrow.css("display", "table");
@@ -155,12 +178,12 @@
                     // Check if scrollable area has crossed the left border then show the arrow
                     if ( left(scrollable) > innerLeft(obj) ) {
                         var fontSize = arrow.css('font-size').replace("px","");
-                        arrowDirection = 0;
+                        arrowDirection = 180;
                         arrowShift = left(scrollable) - innerLeft(obj) - fontSize;
                     }
                     // Check if scrollable area has crossed the right border
                     else if ( right(scrollable) < innerRight(obj) ) {
-                        arrowDirection = 180;
+                        arrowDirection = 0;
                         arrowShift = right(scrollable) - innerLeft(obj);
                     }
                     if (arrowShift != null) {                        
@@ -171,15 +194,11 @@
                             arrow.velocity("stop").velocity({ rotateZ: arrowDirection + "deg" }, 0).velocity({ opacity: 1 }, "slow");
                         }
                     }
-                    // Drag scrollable area
-                    scrollable.offset({left : shift});
-                    //obj[0].scrollLeft = 100;
-                    console.log(obj[0].scrollLeft);
                     // Change currentImg
                     currentImgFract = (innerLeft(obj) - shift) / width(img);
                     currentImg = Math.floor(currentImgFract);
                     //TODO: make it cyclic
-                    //Check if a carousel is cyclic                    
+                    //Check if a carousel is cyclic
                     if (cyclic) {
                         //log();
                         //log(innerRight(scrollable));
@@ -220,9 +239,8 @@
                 console.log("afterBackToBorders: " + e);
             }
         }
-        function backToBorders(speed, where) {
+        function backToBorders(speed) {
             try {
-                //log("backToBorders", 1);
                 scrollable.velocity("stop");
                 if (!speed) { speed = "fast"; }
                 var nextOrPrevImgAreaWidthPercentage = 0.05;
@@ -230,69 +248,110 @@
                     nextOrPrevImgAreaWidthPercentage = nextOrPrevImgAreaWidth.replace("px","") / width(img);
                 }*/
                 var currentImgViwportPosition = currentImgFract - currentImg;
+                console.log("currentImgViwportPosition: " + currentImgViwportPosition);
+                console.log("moveDirectionAfterMouseDown: " + moveDirectionAfterMouseDown);
                 // If scrollable area goes out of the left border
                 if ( left(scrollable) > innerLeft(obj) ) {
+                    console.log("backToBorders::outOfTheLeft");
                     // Slide back to the left border
                     scrollable.velocity({ left: 0 }, speed, afterBackToBorders);
                 }
                 // If scrollable area goes out of the right border
                 else if ( right(scrollable) < innerRight(obj) ) {
+                    console.log("backToBorders::outOfTheRight");
                     // Slide back to the right border
                     scrollable.velocity({
                         left: width(img) + border(scrollable).left + border(scrollable).right - width(scrollable) + 1
                     }, speed, afterBackToBorders);
                 }
                 //
+                /*TODO: does it need it?
                 else if (where == "next") {
                     // Slide to the next image
                     scrollable.velocity({ left: -width(img) * (1 + currentImg) }, speed, afterBackToBorders);
-                }
+                }*/
                 // If scrollable area crosses the inner border between images
+                // If scrollable area drags to the left
                 else if (moveDirectionAfterMouseDown == -1) {
                     if (currentImgViwportPosition >= nextOrPrevImgAreaWidthPercentage) {
+                        console.log("backToBorders::goToNext");
                         // Slide to the next image
-                        scrollable.velocity({ left: -width(img) * (1 + currentImg) }, speed, afterBackToBorders);
+                        //TODO: leave this or next
+                        goTo("next", speed);
+                        //scrollable.velocity({ left: -width(img) * (1 + currentImg) }, speed, afterBackToBorders);
                     }
                     if (currentImgViwportPosition < nextOrPrevImgAreaWidthPercentage) {
+                        console.log("backToBorders::StayAtTheCurrentImage");
                         // Back to current image border
-                        scrollable.velocity({ left: -width(img) * (currentImg) }, speed, afterBackToBorders);
+                        goTo("current", speed);
+                        //scrollable.velocity({ left: -width(img) * (currentImg) }, speed, afterBackToBorders);
                     }
                 }
-                else {//if (moveDirectionAfterMouseDown == 1) {
+                // If scrollable area drags to the right
+                else if (moveDirectionAfterMouseDown == 1) {
                     if (currentImgViwportPosition <= (1 - nextOrPrevImgAreaWidthPercentage)) {
+                        console.log("backToBorders::goToPrev");
                         // Slide to the previous image
-                        scrollable.velocity({ left: -width(img) * (currentImg) }, speed, afterBackToBorders);
+                        //TODO: leave this or next
+                        goTo("prev", speed);
+                        //scrollable.velocity({ left: -width(img) * (currentImg) }, speed, afterBackToBorders);
                     }
                     if (currentImgViwportPosition > (1 - nextOrPrevImgAreaWidthPercentage)) {
+                        console.log("backToBorders::StayAtTheCurrentImage");
                         // Back to current image border
-                        scrollable.velocity({ left: -width(img) * (currentImg + 1) }, speed, afterBackToBorders);
+                        goTo("current", speed);
+                        //scrollable.velocity({ left: -width(img) * (currentImg + 1) }, speed, afterBackToBorders);
                     }
                 }
             } catch(e) {
                 console.error("backToBorders: " + e);
             }
         }
-        function afterGoPrevOrNext() {
+        function afterGoTo() {
             currentImgFract = (innerLeft(obj) - innerLeft(scrollable)) / width(img);
             currentImg = Math.round(currentImgFract);
+            //console.log("innerLeft(obj): " + innerLeft(obj) + ", innerLeft(scrollable): " + innerLeft(scrollable) + ", width(img): " + width(img));
+            console.log("afterGoTo: currentImg: " + currentImg);
         }
         function goTo(where, speed) {
-            //log("goTo");
-            if (!speed) { speed = "slow"; }
+            if (!speed) { speed = "fast"; }
             if (!where) { where = "next"; }
-            var shift;
+            console.log("goTo " + where + " " + speed);
+            var pos, scrollPos;
             if (where == "next") {
-                shift = -width(img) * (currentImg + 1);
+                scrollPos = width(img);// * (currentImg + 1) - (innerLeft(obj) - left(scrollable));
+                console.log("scrollPos: " + scrollPos);
+                //pos = -width(img) * (currentImg + 1);
             } else if (where == "prev") {
-                shift = -width(img) * (currentImg - 1);
-            }
-            else {
-                throw err;
-            }
-            // if current image is not the first one and the last one
-            if ((currentImg < imgCount - 1 && where == "next") ||
-                (currentImg > 0 && where == "prev")) {
-                scrollable.velocity("stop").velocity({ left : shift }, speed, [500, 20], afterGoPrevOrNext);
+                scrollPos = -width(img);// * (currentImg + 1) - (innerLeft(obj) - left(scrollable));;
+                //pos = -width(img) * (currentImg - 1);
+            } else if (where == "current") {
+                scrollPos = -width(img);
+            } else { throw "ERROR::goTo::where == " + where; }
+            //if scrollable area is not animating
+            if (true) {//!scrollable.hasClass("velocity-animating")) {
+                // if current image is not the first one and the last one
+                if ((currentImg < imgCount - 1 && where == "next") ||
+                    (currentImg >= 0 && where == "prev")) {
+                    /*console.log("scrollable.width(): " + scrollable.width());
+                    //obj[0].scrollLeft += (scrollable.width() / imgCount);
+                    console.log("obj[0].scrollLeft: " + obj[0].scrollLeft);
+                    console.log("pos: " + pos);
+                    console.log("scrollable.offset().left: " + scrollable.offset().left);*/
+                    //scrollable.offset().left += pos;
+                    //console.log("currentImg: " + currentImg + ", pos: " + pos + ", scrollPos: " + scrollPos);
+                    //console.log(img[scrollPos]);
+                    //$("#img" + scrollPos)
+                    obj.velocity("scroll", {
+                        duration: speed,
+                        container: obj,
+                        offset: scrollPos,
+                        axis: "x",
+                        complete: afterGoTo,
+                    });
+                    //obj.dequeue("goTo");
+                    //scrollable.velocity("stop").velocity({ left : pos }, speed, /*[500, 20],*/ afterGoTo);
+                }
             }
         }
         /*function createScrollbar() {
@@ -300,9 +359,9 @@
             var carousel = $(".carousel");
             //
             var canvas = $("canvas")[0];
-            var ctx = canvas.getContext("2d");                    
+            var ctx = canvas.getContext("2d");
             var pixelsFromBelow = 18;
-            var naturalPixelsFromBelowY = (img.naturalHeight / img.height ) * pixelsFromBelow;      
+            var naturalPixelsFromBelowY = (img.naturalHeight / img.height ) * pixelsFromBelow;
             canvas.width = carousel.width();
             canvas.height = pixelsFromBelow;
             ctx.translate(0, pixelsFromBelow);
