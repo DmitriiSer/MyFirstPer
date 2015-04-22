@@ -2,8 +2,10 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="testStyles.css">
         <link rel="stylesheet" href="carousel.css">
+        <link rel="stylesheet" href="controls.css">
         <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>        
         <script src="//cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js"></script>
         <script type="text/javascript" src="carousel.js"></script>
@@ -11,15 +13,15 @@
             //ready function
             $(function() {
                 //test a carousel
-                var w = "60%",
+                var w = "600",
                     h = "200",
                     s = true,
                     ss = "18",
                     d = true;
                 //$("#carousel1").carousel({ width: w, height: h, scrollbar: s, dragable: d });
                 $("#carousel1").carousel({ width: w, height: h, scrollbar: s });
-                //$("#carousel1").carousel({ width: w, height: h });
 
+                //$("#carousel1").carousel({ width: w, height: h });
                 //$("#carousel2").carousel({ width: w, height: h });
                 //$("div").carousel({ width: w, height: h });
                 //TODO: Try to add a new carousel
@@ -28,20 +30,21 @@
             });
         </script>
     </head>
-    <body>
+    <body>        
         <div class="console"></div>
         <!--<h1 style="margin: auto; text-align: center">This is the example of simple carousel</h1>-->
-        <div id="carousel1" class="b1">
-            <!--<canvas style="display: none"></canvas>-->
-            <!--<div class="arrow"></div>-->
-            <div class="left-press"></div>
-            <div class="nav b4"></div>
-            <!--<div class="scrollable b2">-->
-            <img class="b3" src="images/Seychelles-Beach1.jpg"/>
-            <img class="b3" src="images/Seychelles-Beach2.jpg"/>
-            <img class="b3" src="images/Seychelles-Beach3.jpg"/>
-            <img class="b3" src="images/Seychelles-Beach4.jpg"/>
-            <!--</div>-->
+        <div style="display: flex">
+            <div id="carousel1" class="b1">
+                <!--<div class="arrow"></div>-->
+                <div class="scrollable b2">
+                    <img class="b3" src="images/Seychelles-Beach1.jpg"/>
+                    <img class="b3" src="images/Seychelles-Beach2.jpg"/>
+                    <img class="b3" src="images/Seychelles-Beach3.jpg"/>
+                    <img class="b3" src="images/Seychelles-Beach4.jpg"/>
+                </div>
+                <div class="controls"></div>
+            </div>
+            <!--<p>Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, Right side paragraph, </p>-->
         </div>
         <!--<div id="carousel2" class="b1">-->
         <!--<img src="images/Seychelles-Beach1.jpg"/>-->
