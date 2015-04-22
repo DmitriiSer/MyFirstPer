@@ -7,7 +7,7 @@ html, body {
     border: 6px solid blue;
     /*bottom: 0;*/
     right: 0;
-    width: 200px;
+    width: 300px;
     height: 250px;
     overflow: auto;
     font-size: 14px;
@@ -15,11 +15,5 @@ html, body {
 
 .b1 { border: 0px solid rgba(58, 72, 237, 1); border-radius: 10px; box-shadow: 0px 0px 64px 6px #888888; }
 .b2 { /*border: 0px solid rgb(238, 255, 34); border-radius: 0px; box-shadow: 0px 0px 32px 4px black;*/ }
-.b3 { border: 0px ridge gray; }
+.b3 { border: 8px ridge gray; }
 .b4 { border: 8px ridge gray; }
-.div {
-    margin: 0px;
-    padding: 0px;
-    text-align: center;
-/*    border: 1px solid black;*/
-}

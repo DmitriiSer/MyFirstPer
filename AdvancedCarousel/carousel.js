@@ -3,123 +3,59 @@
 
 (function( $ ) {
     $.fn.carousel = function(params) {
-        // Properties
-        var viewportWidth = params.width;
-        var viewportHeight = params.height;
-        var imageWidth = params.imageWidth;
-        var draggable = params.draggable;
-        var cyclic = params.cyclic;
-        // Default values for properties
-        if (!viewportWidth) { viewportWidth = "100%"; }
-        if (!viewportHeight) { viewportHeight = 200; }
-        if (!imageWidth) { imageWidth = "100%"; }
-        if (draggable === undefined || draggable === null) { draggable = true; }
-        if (cyclic === undefined || cyclic === null) { cyclic = true; }
         // Variables
         // set viewport variable to this
         var viewport = this;
-        //check if viewport has a class. If not add a style to a viewport
-        if (!viewport.hasClass("carousel")) { viewport.addClass("carousel"); }
-        //check if there is an element with a class 'scrollable'. If not then create one and fill it with images
         var scrollable;
-        if ( !$(".scrollable").length ) {
-            viewport.append("<div class='scrollable'></div>");
-            $("img").each(function(number, element) { $(".scrollable").append(element); });
-        }
-        scrollable = $(".scrollable");
-        // set variables for images
-        var img = $(".carousel img");
-        var imgCount = $(".carousel img").length;
-        //check if there is an element with a class 'arrow'. If not then create one
+        var img,
+            imgCount;
         var arrow;
-        if ( !$(".arrow").length ) { viewport.prepend("<div class='arrow'></div>"); }
-        arrow = $(".arrow");
-        // set unicode arrow symbol to arrow div
-        arrow.html("&#x27bb");
-        // check if there is a controls DOM
-        // If not then create one
         var controls;
-        if ( !$(".controls").length ) { viewport.prepend("<div class='controls'></div>"); }
-        var controls = $(".controls");
-        // check if there is a <nav> DOM indode controls
-        var nav;
-        if ( !$(".controls > nav").length ) {
-            controls.prepend("<nav><ul></ul></nav>");
-            $(".carousel img").each(function(n, e) { $(".controls > nav > ul").append("<li></li>"); });
-        }
-        var nav = $(".controls > nav");
-        var navItems = $(".controls > nav > ul > li");
-        // check if there is a nav-prev DOM. If not then create one
-        var navPrev;
-        if ( !$(".controls > .nav-prev").length ) { controls.prepend("<div class='nav-prev'><a class='nav-a'></a></div>"); }    
-        var navPrev = $(".controls > .nav-prev");
-        var navPrevA = $(".controls > .nav-prev a");
-        // check if there is a nav-next DOM. If not then create one
-        var navNext;
-        if ( !$(".controls > .nav-next").length ) { controls.prepend("<div class='nav-next'><a class='nav-a'></a></div>"); }
-        var navNext = $("controls > .nav-next");
-        var navNextA = $("controls > .nav-next a");
-        //
-        var mouseDown = false;
-        var dragged = false;
-        var mouseDownDragPosition;
-        var currentImgFract = 0.0;
-        var currentImg = 0;
-        var nextOrPrevImgAreaWidth = "25px";
-        var moveDirectionAfterMouseDown = 0;
-        //
-        // Set width to viewport (.carousel) and exclude borders
-        viewport.width(viewportWidth);
-        // Set heigth to viewport (.carousel)
-        if (viewportHeight.indexOf("%") != -1) {
-            viewport.height($(window).height() * viewportHeight.replace("%", "") / 100);
-        } else {
-            viewport.height(viewportHeight);
-        }
-        // Set widths to scrollable area (.scrollable) and exclude borders    
-        //   If image width contains percantage than translate it to px
-        if (imageWidth.indexOf("%") != -1) {
-            imageWidth = innerWidth(viewport) * imageWidth.replace("%", "") / 100;
-            imageWidth = imageWidth -
-                border(scrollable).left - border(scrollable).right -
-                border(img).left - border(img).right;            
-        }
-        scrollable.width(imgCount * (imageWidth + border(img).left + border(img).right) + 1);
-        // Set widths to images (.carousel img)
-        img.width(imageWidth);
-        // Set heigth to images (.carousel img)
-        img.height(innerHeight(scrollable) - border(img).top - border(img).bottom);
-        //
+        var nav,
+            navItems,
+            navPrev,
+            navPrevA,
+            navNext,
+            navNextA;
+        var mouseDown,
+            mouseDownDragPosition,
+            currentImgFract,
+            currentImg,
+            nextOrPrevImgAreaWidth,
+            moveDirectionAfterMouseDown,
+            interv;
+        // Properties
+        var viewportWidth = params.width,
+            viewportHeight = params.height,
+            imageWidth = params.imageWidth,
+            draggable = params.draggable,            
+            cyclic = params.cyclic,
+            timer = params.timer;
+        // Initialize carousel
+        init();
         //--Carousel event attaching
         //----Prevent dragging        
         viewport.on("dragstart", function (e) { e.preventDefault(); });
         //----Mouse events
         viewport.on("mousedown", carouselMouseDown);
         viewport.on("mouseup", carouselMouseUp);
-        viewport.on("mouseleave", function() {
-            //console.log("viewport.mouseleave");
-            mouseDown = false;
-            //RETURN: backToBorders();
-        });        
-        //----Dragging and scrolling
         viewport.on("mousemove", carouselMouseMove);
-        viewport.on("scroll", function(e) { e.preventDefault(); });
-        /*viewport.on("scroll", function(e) {
-            log("this.scrollWidth: " + this.scrollWidth, 1);
-            log("this.offsetWidth: " + this.offsetWidth);
-            //this.scrollLeft = 0;
-        });*/
-        //navPrev.on("mouseup", function(e) { viewport.off("mouseup"); });
-        navPrevA.on("click", function(e) { console.log("navPrevA.mouseup"); goTo("prev"); });
-        //navNext.on("mouseup", function(e) { viewport.off("mouseup"); });
-        navNextA.on("click", function(e) { console.log("navNextA.mouseup"); goTo("next"); });
-        navItems.on("click", function(e) {
-            console.log("navItems.mouseup");
-            goTo($(this).index());
-        });
+        viewport.on("mouseleave", function() { /*log("viewport.mouseleave");*/ mouseDown = false; backToBorders(); });
+        //----Enable/Disable viewport mouse down/up events while on top of controls
+        navItems.on("mouseenter", function(){viewport.off("mousedown mouseup");});
+        navItems.on("mouseleave", function(){viewport.on("mousedown", carouselMouseDown); viewport.on("mouseup", carouselMouseUp);});
+        navPrevA.on("mouseenter", function(){viewport.off("mousedown mouseup");});
+        navPrevA.on("mouseleave", function(){viewport.on("mousedown", carouselMouseDown); viewport.on("mouseup", carouselMouseUp);});
+        navNextA.on("mouseenter", function(){viewport.off("mousedown mouseup");});
+        navNextA.on("mouseleave", function(){viewport.on("mousedown", carouselMouseDown); viewport.on("mouseup", carouselMouseUp);});        
+        //----Controls clicking events
+        navItems.on("click", function(e) { /*log("navItems.click");*/ goTo($(this).index()); });
+        navPrevA.on("click", function(e) { /*log("navPrevA.click");*/ goTo("prev"); });
+        navNextA.on("click", function(e) { /*log("navNextA.click");*/ goTo("next"); });
         //----Window resizes
+        //TODO: fix some issues
         $(window).on("resize", function() {
-            log("resize");
+            log("window.resize");
             viewport.width(viewportWidth);
             if (viewportHeight.indexOf("%") != -1) {
                 viewport.height($(window).height() * viewportHeight.replace("%", "") / 100);
@@ -127,29 +63,106 @@
                 viewport.height(viewportHeight);
             }
         });
+        //check if timer is not 0
+        if (timer > 0) { interv = setInterval(function() { goTo("next"); }, timer); }
 
+        //Initialization
+        function init() {
+            // Default values for properties
+            if (viewportWidth === undefined || viewportWidth === null) { viewportWidth = "100%"; }
+            if (viewportHeight === undefined || viewportHeight === null) { viewportHeight = 200; }
+            if (imageWidth === undefined || imageWidth === null) { imageWidth = "100%"; }
+            if (draggable === undefined || draggable === null) { draggable = false; }
+            if (cyclic === undefined || cyclic === null) { cyclic = false; }
+            if (timer === undefined || timer === null) { timer = 0; }
+            // Default values for variables
+            mouseDown = false;
+            mouseDownDragPosition;
+            currentImgFract = 0.0;
+            currentImg = 0;
+            nextOrPrevImgAreaWidth = "25px";
+            moveDirectionAfterMouseDown = 0;
+            //check if viewport has a class. If not add a style to a viewport
+            if (!viewport.hasClass("carousel")) { viewport.addClass("carousel"); }
+            img = viewport.find("img");
+            //check if there is an element with a class 'scrollable'. If not then create one and fill it with images
+            if ( !viewport.has(".scrollable").length ) {
+                viewport.append("<div class='scrollable'></div>");
+                img.each(function(number, element) { viewport.find(".scrollable").append(element); });
+            }
+            scrollable = viewport.find(".scrollable");
+            imgCount = img.length;
+            //check if there is an element with a class 'arrow'. If not then create one
+            if ( !viewport.has(".arrow").length ) { viewport.prepend("<div class='arrow'></div>"); }
+            arrow = viewport.find(".arrow");
+            // check if there is a controls DOM. If not then create one
+            if ( !viewport.find(".controls").length ) { viewport.prepend("<div class='controls'></div>"); }
+            controls = viewport.find(".controls");
+            // check if there is a <nav> DOM indode controls            
+            if ( !controls.find("nav").length ) {
+                controls.prepend("<nav><ul></ul></nav>");
+                //$(".carousel img").each(function(n, e) { $(".controls > nav > ul").append("<li></li>"); });
+                img.each(function(n, e) {
+                    if(n == 0) { controls.find("nav > ul").append("<li class='current'></li>"); }
+                    else { controls.find("nav > ul").append("<li></li>"); }
+                });
+            }
+            nav = controls.find("nav");
+            navItems = nav.find("ul > li");            
+            // check if there is a nav-prev DOM. If not then create one
+            if (!controls.find(".nav-prev").length) { controls.prepend("<div class='nav-prev'><a class='nav-a'></a></div>"); }
+            navPrev = controls.find(".nav-prev");
+            navPrevA = navPrev.find("a");
+            // check if there is a nav-next DOM. If not then create one
+            if (!controls.find(".nav-next").length) { controls.prepend("<div class='nav-next'><a class='nav-a'></a></div>"); }
+            navNext = controls.find(".nav-next");
+            navNextA = navNext.find("a");
+            //
+            // Set width to viewport (.carousel) and exclude borders
+            viewport.width(viewportWidth);
+            // Set heigth to viewport (.carousel)
+            if (viewportHeight.indexOf("%") != -1) {
+                viewport.height($(window).height() * viewportHeight.replace("%", "") / 100);
+            } else {
+                viewport.height(viewportHeight);
+            }
+            // Set widths to scrollable area (.scrollable) and exclude borders    
+            //   If image width contains percantage than translate it to px
+            if (imageWidth.indexOf("%") != -1) {
+                imageWidth = innerWidth(viewport) * imageWidth.replace("%", "") / 100;
+                imageWidth = imageWidth -
+                    border(scrollable).left - border(scrollable).right -
+                    border(img).left - border(img).right;            
+            }
+            scrollable.width(imgCount * (imageWidth + border(img).left + border(img).right) + 1);
+            // Set widths to images (.carousel img)
+            img.width(imageWidth);
+            // Set heigth to images (.carousel img)
+            img.height(innerHeight(scrollable) - border(img).top - border(img).bottom);
+        }
         // Carousel event handlers
         function carouselMouseDown(e) {
-            //console.log("viewport.mousedown");
-            mouseDown = true;
+            /*log("viewport.mousedown");*/
+            mouseDown = true;            
             if (draggable) { mouseDownDragPosition = e.pageX - left(scrollable); }
+            // pause caousel rotation
+            //clearInterval(interv);
         }
         function carouselMouseUp(e) {
-            console.log("viewport.mouseup");
+            /*log("viewport.mouseup");*/
             try {
-                //TODO: show/hide blended scrollbar
                 // Check if arrow is visible then hide it
                 if (arrow.css("display") == "table") {
-                    arrow.velocity("stop")
-                        .velocity({ left: 0, opacity: 0 }, "slow", function (){ arrow.css("display", "none"); });
+                    arrow.velocity({left: 0, opacity: 0}, "slow", function(){ arrow.css("display", "none"); });
+                    navPrev.velocity({left : 0}, 100);
+                    navNext.velocity({right : 0}, 100);
                 }
                 // Move scrollable area back to the borders if it was moved
-                if (mouseDown && dragged) {
-                    console.log("viewport.mouseup.backToBorders()");
-                    backToBorders(); /*dragged = false;*/
-                }
+                if (mouseDown) { backToBorders(); }
                 mouseDown = false;
                 moveDirectionAfterMouseDown = 0;
+                // unpause carousel rotation
+                //interv = setInterval(function() { goTo("next"); }, timer);
             } catch(e) {
                 console.error("carouselMouseUp" + e);
             }
@@ -157,35 +170,16 @@
         function carouselMouseMove(e) {
             try {                
                 // Check if scrollable area has grabbed
-                if (mouseDown) {
-                    dragged = true;
-                    log("viewport.mousemove::drag", 1);
-                    log("scrollable.offset().left: " + scrollable.offset().left);
+                if (draggable && mouseDown) {
+                    /*log("viewport.mousemove::drag", 1);*/
                     moveDirectionAfterMouseDown = e.pageX - left(scrollable) - mouseDownDragPosition;
                     if (moveDirectionAfterMouseDown < 0) { moveDirectionAfterMouseDown = -1; }
                     else if (moveDirectionAfterMouseDown > 0) { moveDirectionAfterMouseDown = 1; }
                     else { moveDirectionAfterMouseDown = 0; }
                     // Calculate a shift from the position where the mouse was pressed
                     var shift = e.pageX - mouseDownDragPosition;
-                    var scrollShift = 213 - shift;
-                    //TODO: make scrollbar work
                     // Drag scrollable area
-                    //console.log(shift);
-
-                    //scrollable.offset({ left : shift });
-                    viewport[0].scrollLeft = left(viewport) - shift;
-                    //
-                    navPrev.css("left", viewport[0].scrollLeft);
-                    navNext.css("right", -viewport[0].scrollLeft);
-
-                    //viewport[0].scrollLeft = scrollShift;
-
-                    //console.log("" + scrollable.offset().left);
-                    //console.log(viewport[0].scrollLeft);
-                    //viewport.scrollLeft(-shift);
-
-                    // Change scrollbar position
-                    //viewport.scrollLeft(left(viewport) - shift);
+                    scrollable.offset({ left : shift });
                     // Check if arrow is not appeared then make it visible
                     if (arrow.css("display") == "none") {
                         arrow.css("display", "table");
@@ -193,41 +187,37 @@
                     var arrowShift = null;
                     var arrowDirection = 0;
                     // Check if scrollable area has crossed the left border then show the arrow
-                    console.log("left(scrollable): " + left(scrollable) + ",innerLeft(viewport): " + innerLeft(viewport));
                     if ( innerLeft(viewport) <= left(scrollable)) {
-                        console.log("// Check if scrollable area has crossed the left border then show the arrow");
-                        //TODO: fix this
-                        //scrollable.offset({ left : shift });                        
                         var fontSize = arrow.css('font-size').replace("px","");
                         arrowDirection = 180;
                         arrowShift = left(scrollable) - innerLeft(viewport) - fontSize;
+                        // Hide nav-prev DOM
+                        if (!navPrev.hasClass("velocity-animating"))
+                            navPrev.velocity({left : -width(navPrev) }, 100);
                     }
                     // Check if scrollable area has crossed the right border then show the arrow
                     else if ( right(scrollable) < innerRight(viewport) ) {
-                        console.log("// Check if scrollable area has crossed the right border then show the arrow");
                         arrowDirection = 0;
                         arrowShift = right(scrollable) - innerLeft(viewport);
+                        // Hide nav-next DOM
+                        if (!navNext.hasClass("velocity-animating"))
+                            navNext.velocity({right : -width(navPrev) }, 100);
                     }
                     if (arrowShift != null) {                        
                         //Change left property of the arrow while moving the scrollable area
                         arrow.css("left", arrowShift);
                         // if the arrow is not animating then animate it to show
                         if (!arrow.hasClass("velocity-animating") && arrow.css("opacity") < 1) {
-                            arrow.velocity("stop").velocity({ rotateZ: arrowDirection + "deg" }, 0).velocity({ opacity: 1 }, "slow");
+                            arrow.velocity({ rotateY: arrowDirection + "deg" }, 0).velocity({ opacity: 1 }, "slow");
                         }
                     }
                     // Change currentImg
-                    //RETURN:
-                    currentImgFract = (innerLeft(viewport) - shift) / width(img);
-                    //RETURN: currentImg = Math.floor(currentImgFract);
-                    currentImg = Math.round(viewport.scrollLeft() / width(img));
-                    log("currentImgFract: " + currentImgFract, 1);
-                    log("currentImg: " + currentImg);
+                    currentImgFract = (innerLeft(viewport) - innerLeft(scrollable)) / width(img);
+                    /*log("currentImgFract: " + currentImgFract);
+                    log("currentImg: " + currentImg);*/
                     //TODO: make it cyclic
                     //Check if a carousel is cyclic
                     if (cyclic) {
-                        //log();
-                        //log(innerRight(scrollable));
                         /*
                         log("in cyclic", 1);
                         //Prepend the last image before image #1
@@ -254,145 +244,95 @@
             } catch(e) {
                 console.error("viewport.mousemove: " + e);
             }
-            //log("carouselMouseMove", 1); log("currentImg: " + currentImg); log("currentImgFract: " + currentImgFract);
         }
         // Helper methods
-        function afterBackToBorders() {
-            try {
-                currentImgFract = (innerLeft(viewport) - innerLeft(scrollable)) / width(img);
-                currentImg = Math.round(currentImgFract);
-            } catch(e) {
-                console.log("afterBackToBorders: " + e);
-            }
-        }
         function backToBorders(speed) {
             try {
-                scrollable.velocity("stop");
-                if (!speed) { speed = "fast"; }
+                if (speed === undefined || speed === null) { speed = "fast"; }
                 var nextOrPrevImgAreaWidthPercentage = 0.05;
-                /*if (nextOrPrevImgAreaWidth.indexOf("px") != -1) {
-                    nextOrPrevImgAreaWidthPercentage = nextOrPrevImgAreaWidth.replace("px","") / width(img);
-                }*/
                 var currentImgViwportPosition = currentImgFract - currentImg;
-                console.log("currentImgViwportPosition: " + currentImgViwportPosition);
-                console.log("moveDirectionAfterMouseDown: " + moveDirectionAfterMouseDown);
                 // If scrollable area goes out of the left border
                 if ( left(scrollable) > innerLeft(viewport) ) {
-                    console.log("backToBorders::outOfTheLeft");
-                    // Slide back to the left border
-                    scrollable.velocity({ left: 0 }, speed, afterBackToBorders);
+                    /*log("backToBorders::outOfTheLeft");*/
+                    // Slide back to the first image
+                    goTo(0);
                 }
                 // If scrollable area goes out of the right border
                 else if ( right(scrollable) < innerRight(viewport) ) {
-                    console.log("backToBorders::outOfTheRight");
-                    // Slide back to the right border
-                    scrollable.velocity({
-                        left: width(img) + border(scrollable).left + border(scrollable).right - width(scrollable) + 1
-                    }, speed, afterBackToBorders);
+                    /*log("backToBorders::outOfTheRight");*/
+                    // Slide back to the last image
+                    goTo(imgCount - 1);
                 }
-                //
-                /*TODO: does it need it?
-                else if (where == "next") {
-                    // Slide to the next image
-                    scrollable.velocity({ left: -width(img) * (1 + currentImg) }, speed, afterBackToBorders);
-                }*/
                 // If scrollable area crosses the inner border between images
-                // If scrollable area drags to the left
+                // If scrollable area goes to the left direction
                 else if (moveDirectionAfterMouseDown == -1) {
                     if (currentImgViwportPosition >= nextOrPrevImgAreaWidthPercentage) {
-                        console.log("backToBorders::goTo.next");
+                        /*log("backToBorders::goTo.next");*/
                         // Slide to the next image
-                        //TODO: leave this or next
                         goTo("next", speed);
-                        //scrollable.velocity({ left: -width(img) * (1 + currentImg) }, speed, afterBackToBorders);
                     }
                     if (currentImgViwportPosition < nextOrPrevImgAreaWidthPercentage) {
-                        console.log("backToBorders::StayAtTheCurrentImage");
+                        /*log("backToBorders::StayAtTheCurrentImage");*/
                         // Back to current image border
                         goTo("current", speed);
-                        //scrollable.velocity({ left: -width(img) * (currentImg) }, speed, afterBackToBorders);
                     }
                 }
-                // If scrollable area drags to the right
+                // If scrollable area goes to the right direction
                 else if (moveDirectionAfterMouseDown == 1) {
                     if (currentImgViwportPosition <= (1 - nextOrPrevImgAreaWidthPercentage)) {
-                        console.log("backToBorders::goTo.prev");
+                        /*log("backToBorders::goTo.prev");*/
                         // Slide to the previous image
-                        //TODO: leave this or next
                         goTo("prev", speed);
-                        //scrollable.velocity({ left: -width(img) * (currentImg) }, speed, afterBackToBorders);
                     }
                     if (currentImgViwportPosition > (1 - nextOrPrevImgAreaWidthPercentage)) {
-                        console.log("backToBorders::StayAtTheCurrentImage");
+                        /*log("backToBorders::StayAtTheCurrentImage");*/
                         // Back to current image border
                         goTo("current", speed);
-                        //scrollable.velocity({ left: -width(img) * (currentImg + 1) }, speed, afterBackToBorders);
                     }
                 }
             } catch(e) {
                 console.error("backToBorders: " + e);
             }
         }
-        function afterGoTo() {
+        function setCurrentImage() {
             currentImgFract = (innerLeft(viewport) - innerLeft(scrollable)) / width(img);
             currentImg = Math.round(currentImgFract);
-            console.log("afterGoTo: currentImg: " + currentImg);
-            viewport.on("mouseup", carouselMouseUp);
+            /*log("setCurrentImage::currentImg: " + currentImg);*/
         }
         function goTo(where, speed) {
             if (where === undefined || where === null) { where = "next"; }
-            if (speed === undefined || speed === null) { speed = "fast"; }            
-            var pos, scrollPos, scrollOffset = 0;
-            if (where == "next") {
-                //scrollPos = width(img);// * (currentImg + 1) - (innerLeft(viewport) - left(scrollable));
-                var offset = (innerLeft(viewport) - left(scrollable)) % width(img);
-                console.log("offset: " + offset);
-                scrollOffset = width(img) - offset;                
-                //pos = -width(img) * (currentImg + 1);
-            } else if (where == "prev") {
-                //scrollPos = -width(img);// * (currentImg + 1) - (innerLeft(viewport) - left(scrollable));;
-                scrollOffset = -width(img);
-                //pos = -width(img) * (currentImg - 1);
-            } else if (where == "current") {
-                scrollPos = -width(img);
-            } else if (parseInt(where) != NaN) {
-                scrollPos = where * width(img);
-                console.log("scrollPos: " + scrollPos);
-            } else { throw "ERROR::goTo::where == " + where; }
-            //if scrollable area is not animating
-            if (!viewport.hasClass("velocity-animating")) { 
-                // if current image is not the first one and the last one
-                /*if ((where == "prev" && currentImg > 0) ||
-                    (where == "next" && currentImg < imgCount - 1)) {*/
-                if (currentImg > 0 || currentImg < imgCount - 1) {
-                    console.log("goTo." + where + "(" + speed + ")");
-                    console.log("currentImg: " + currentImg);
-                    console.log("scrollPos: " + scrollPos);
-                    console.log("scrollOffset: " + scrollOffset);
-                    /*console.log("scrollable.width(): " + scrollable.width());
-                    //viewport[0].scrollLeft += (scrollable.width() / imgCount);
-                    console.log("viewport[0].scrollLeft: " + viewport[0].scrollLeft);
-                    console.log("pos: " + pos);
-                    console.log("scrollable.offset().left: " + scrollable.offset().left);*/
-                    //scrollable.offset().left += pos;                    
-                    //console.log(img[scrollPos]);
-                    //$("#img" + scrollPos)
-                    
-                    viewport.velocity("scroll", {
-                        duration: speed, container: viewport, offset: scrollOffset, axis: "x",
-                        complete: afterGoTo, queue: "move"
-                    });
-                    controls.velocity({
-                        left: scrollPos,
-                        /*rigth: "+=" + width(img),*/
-                    }, speed, "move");
-                    viewport.dequeue("move");
-                    //scrollable.velocity("stop").velocity({ left : pos }, speed, /*[500, 20],*/ afterGoTo);
+            if (speed === undefined || speed === null) { speed = "fast"; }
+            /*log("goTo(" + where + "), speed = " + speed);*/
+            var scrollablePos = 0;
+            // set where to a concrete image index
+            if (where == "next") { where = currentImg + 1; }
+            else if (where == "prev") { where = currentImg - 1; }
+            else if (where == "current") { where = currentImg; }
+            // if "where" is a number
+            if (parseInt(where) != NaN) {
+                // if where is less than 0 then "where" = 0
+                if (where < 0) {
+                    //if cyclic then make an arrangement
+                    cyclic ? (where = imgCount - 1) : (where = 0);
                 }
+                // if where is greater than (imgCount - 1) then "where" = (imgCount - 1)
+                if (where > (imgCount - 1)) {
+                    //if cyclic then make an arrangement
+                    cyclic ? (where = 0) : (where = (imgCount - 1));
+                }
+                scrollablePos = -width(img) * where;
+            }
+            // else we have a wrong "where" argument
+            else { throw "ERROR::goTo::where == " + where; }
+            //if scrollable area is not animating
+            if (!viewport.hasClass("velocity-animating")) {
+                // move scrollable area to "where" image
+                navItems.each(function(n,e){ if($(e).hasClass("current")) { $(e).removeClass("current"); } });
+                $(navItems[where]).addClass("current");
+                scrollable.velocity({ left: scrollablePos }, speed, /*[500, 20], */setCurrentImage);
             }
         }
     }
-
     function log(message, clear) {
         if (clear == 1) { $(".console").html(""); }
         if (!message) { $(".console").html(""); } else { $(".console").append(message + "</br>"); }
