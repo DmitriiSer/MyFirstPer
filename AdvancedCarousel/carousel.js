@@ -2,6 +2,17 @@
 /*global define, $, brackets, window */
 
 (function( $ ) {
+    /**
+    * Creates an advanced carousel.
+    * @author - Dmitrii Serikov
+    * @param params A bunch of parameters of the carousel.
+    * @param {number|string} params.viewportWidth Carousel's viewport width.
+    * @param {number|string} params.viewportHeight Carousel's viewport height.
+    * @param {number|string} params.imageWidth The width of every image inside the carousel
+    * @param {boolean} params.draggable If 'true' then makes images to be draggable by a mouse. Default is 'false'
+    * @param {boolean} params.cyclic If 'true' then after the last image carousel's viewport focus will go to a first image. Default is 'false'
+    * @param {number} params.timer If timer is set then the carousel starts switching images with the interval of this value in ms
+    */
     $.fn.carousel = function(params) {
         // Variables
         // set viewport variable to this
@@ -23,8 +34,8 @@
             currentImg,
             nextOrPrevImgAreaWidth,
             moveDirectionAfterMouseDown,
-            interv;
-        // Properties
+            Timer;
+        // Parameters
         var viewportWidth = params.width,
             viewportHeight = params.height,
             imageWidth = params.imageWidth,
@@ -40,7 +51,7 @@
         viewport.on("mousedown", carouselMouseDown);
         viewport.on("mouseup", carouselMouseUp);
         viewport.on("mousemove", carouselMouseMove);
-        viewport.on("mouseleave", function() { /*log("viewport.mouseleave");*/ mouseDown = false; backToBorders(); });
+        viewport.on("mouseleave", carouselMouseLeave);
         //----Enable/Disable viewport mouse down/up events while on top of controls
         navItems.on("mouseenter", function(){viewport.off("mousedown mouseup");});
         navItems.on("mouseleave", function(){viewport.on("mousedown", carouselMouseDown); viewport.on("mouseup", carouselMouseUp);});
@@ -55,16 +66,33 @@
         //----Window resizes
         //TODO: fix some issues
         $(window).on("resize", function() {
-            log("window.resize");
+            /*log("window.resize");*/
+            // Set width to viewport (.carousel) and exclude borders            
             viewport.width(viewportWidth);
-            if (viewportHeight.indexOf("%") != -1) {
-                viewport.height($(window).height() * viewportHeight.replace("%", "") / 100);
-            } else {
-                viewport.height(viewportHeight);
+            // Set heigth to viewport (.carousel)
+            if (typeof viewportHeight === "string") {
+                if (viewportHeight.indexOf("%") != -1) {
+                    viewport.height($(window).height() * viewportHeight.replace("%", "") / 100);
+                }
             }
+            viewport.height(viewportHeight);
         });
+        // Timer function
+        var Timer = {
+            totalSeconds: 800,
+            start: function () {
+                this.interval = setInterval(function() { goTo("next"); }, timer);
+            },
+            pause: function () {
+                clearInterval(this.interval);
+                delete this.interval;
+            },
+            resume: function () {
+                if (!this.interval) this.start();
+            }
+        };
         //check if timer is not 0
-        if (timer > 0) { interv = setInterval(function() { goTo("next"); }, timer); }
+        if (timer > 0) { Timer.start(); }
 
         //Initialization
         function init() {
@@ -118,14 +146,15 @@
             navNext = controls.find(".nav-next");
             navNextA = navNext.find("a");
             //
-            // Set width to viewport (.carousel) and exclude borders
+            // Set width to viewport (.carousel) and exclude borders            
             viewport.width(viewportWidth);
             // Set heigth to viewport (.carousel)
-            if (viewportHeight.indexOf("%") != -1) {
-                viewport.height($(window).height() * viewportHeight.replace("%", "") / 100);
-            } else {
-                viewport.height(viewportHeight);
+            if (typeof viewportHeight === "string") {
+                if (viewportHeight.indexOf("%") != -1) {
+                    viewport.height($(window).height() * viewportHeight.replace("%", "") / 100);
+                }
             }
+            viewport.height(viewportHeight);
             // Set widths to scrollable area (.scrollable) and exclude borders    
             //   If image width contains percantage than translate it to px
             if (imageWidth.indexOf("%") != -1) {
@@ -145,8 +174,8 @@
             /*log("viewport.mousedown");*/
             mouseDown = true;            
             if (draggable) { mouseDownDragPosition = e.pageX - left(scrollable); }
-            // pause caousel rotation
-            //clearInterval(interv);
+            // pause carousel image switching
+            Timer.pause();
         }
         function carouselMouseUp(e) {
             /*log("viewport.mouseup");*/
@@ -161,12 +190,19 @@
                 if (mouseDown) { backToBorders(); }
                 mouseDown = false;
                 moveDirectionAfterMouseDown = 0;
-                // unpause carousel rotation
-                //interv = setInterval(function() { goTo("next"); }, timer);
+                // resume carousel image switching
+                Timer.resume();
             } catch(e) {
                 console.error("carouselMouseUp" + e);
             }
-        }        
+        }       
+        function carouselMouseLeave(e) {
+            /*log("viewport.mouseleave");*/
+            mouseDown = false;
+            backToBorders();
+            // resume carousel image switching
+            Timer.resume();
+        }
         function carouselMouseMove(e) {
             try {                
                 // Check if scrollable area has grabbed
@@ -333,10 +369,6 @@
             }
         }
     }
-    function log(message, clear) {
-        if (clear == 1) { $(".console").html(""); }
-        if (!message) { $(".console").html(""); } else { $(".console").append(message + "</br>"); }
-    }
     // Outer left position (including left border)
     function left(elem) { return elem[0].getBoundingClientRect().left; }
     // Inner left position (without left border)
@@ -362,10 +394,8 @@
     // Inner height (without top and bottom borders)
     function innerHeight(elem) { return height(elem) - border(elem).top - border(elem).bottom; }
     function border(elem) {
-        var border = { left: parseInt(elem.css("border-left-width")),
-                      top: parseInt(elem.css("border-top-width")),
-                      right: parseInt(elem.css("border-right-width")),
-                      bottom: parseInt(elem.css("border-bottom-width")) };
-        return border;
+        return {
+            left: parseInt(elem.css("border-left-width")), top: parseInt(elem.css("border-top-width")),
+            right: parseInt(elem.css("border-right-width")), bottom: parseInt(elem.css("border-bottom-width")) };
     }
 }) ( jQuery );

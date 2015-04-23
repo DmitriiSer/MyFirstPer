@@ -12,6 +12,9 @@
 /* Carousel main class */
 .carousel {
     position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
     background: url(images/bg.JPG);
     margin: 0 auto;
@@ -37,18 +40,98 @@
     z-index: 13;
 }
 /* Carousel's arrow symbol */
-.arrow:before {
-    content: "\279c";
-    content: "\279f";
-}
+.arrow:before { content: "\279f"; }
 .arrow {
     position: relative;
     display: none;
     font-size: 50px;
     color: rgba(255, 255, 255, 0.8);
     opacity: 0;
+    filter: alpha(opacity=0);
     text-align: right;
     margin: auto 0;
     text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.3), -1px -1px 2px rgba(255, 255, 255, 0.3);
     z-index: 11;
 }
+/* TODO: Carousel's navigation pan */
+.controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;    
+    overflow: hidden;
+    z-index: 99;
+}
+.controls > nav {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 30px;
+    text-align: center;
+    margin: auto 0;
+    z-index: 14;
+}
+.controls nav ul {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 0px;
+    z-index: 14;
+}
+.controls nav ul > li {
+    display: inline-block;
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border: 1px solid rgb(25, 25, 112);
+    background: rgba(100, 149, 237, 0.6);
+    margin: auto 5px;    
+    -webkit-transform: rotateZ(45deg);
+    -ms-transform: rotateZ(45deg);
+    transform: rotateZ(45deg);
+    z-index: 14;
+}
+.controls nav ul > li:hover {
+    background: rgba(255, 165, 0, 0.8);
+    color: rgba(0, 0, 0, 0.8);
+    cursor: pointer;
+}
+.controls nav ul > li.current {
+    background: white;
+}
+/*Go to previous image and go to next image styles*/
+.controls > .nav-prev, .controls > .nav-next {
+    position: absolute;
+    width: 50px;
+    height: 100%;
+    z-index: 99;
+    color: rgba(255, 255, 255, 0.5);    
+}
+.controls > .nav-next { right: 0; }
+.controls > .nav-prev a:before, .controls > .nav-next a:before { content: "\279c"; }
+.controls > .nav-prev a, .controls > .nav-next a {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 25px;
+    line-height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%) rotateY(180deg);
+    -ms-transform: translateX(-50%) translateY(-50%) rotateY(180deg);
+    transform: translateX(-50%) translateY(-50%) rotateY(180deg);
+}
+.controls > .nav-next a { -webkit-transform: translateX(-50%) translateY(-50%) rotateY(0deg); transform: translateX(-50%) translateY(-50%) rotateY(0deg); }
+.controls > .nav-prev a:hover, .controls > .nav-next a:hover {
+    background: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.7);
+}
+.nav-prev a:hover, .nav-next a:hover { cursor: pointer; }

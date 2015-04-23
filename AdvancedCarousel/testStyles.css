@@ -17,3 +17,17 @@ html, body {
 .b2 { /*border: 0px solid rgb(238, 255, 34); border-radius: 0px; box-shadow: 0px 0px 32px 4px black;*/ }
 .b3 { border: 8px ridge gray; }
 .b4 { border: 8px ridge gray; }
+.params {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 1px solid gray;
+    border-radius: 4px;
+    height: 200px;
+    margin: 20px;
+}
+#slider1 {
+    width: 100px;
+}
+#slider1 .ui-slider-range { background: #ef2929; }
