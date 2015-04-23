@@ -79,16 +79,17 @@
         });
         // Timer function
         var Timer = {
-            totalSeconds: 800,
             start: function () {
-                this.interval = setInterval(function() { goTo("next"); }, timer);
+                if (timer > 0) { this.interval = setInterval(function() { goTo("next"); }, timer); }
             },
             pause: function () {
-                clearInterval(this.interval);
-                delete this.interval;
+                if (timer > 0) {
+                    clearInterval(this.interval);
+                    delete this.interval;
+                }
             },
             resume: function () {
-                if (!this.interval) this.start();
+                if (timer > 0 && (this.interval === undefined || this.interval === null)) { this.start(); }
             }
         };
         //check if timer is not 0

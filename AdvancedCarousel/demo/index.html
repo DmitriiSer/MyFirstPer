@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-type" content="text/html; charset=UTF-8">        
+        <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="http://cdn.jsdelivr.net/velocity/1.2.2/velocity.min.js"></script>
+        <style>
+            .console {
+                position: fixed;
+                border: 6px solid blue;
+                right: 0;
+                width: 300px;
+                height: 250px;
+                overflow: auto;
+                font-size: 14px;
+            }
+        </style>
+        <script>
+            function log(message, clear) {
+                var con = $(".console");
+                if (clear == 1) { con.html(""); }
+                if (!message) { con.html(""); } else { con.append(message + "</br>"); }
+                con[0].scrollTop = con[0].scrollHeight;
+            }
+        </script>
+        <link rel="stylesheet" href="../src/carousel.css">
+        <script type="text/javascript" src="../src/carousel.js"></script>
+        <script>
+            //ready function
+            $(function() {
+                //test carousels
+                createCarousels();
+            });
+            function createCarousels() {
+                $("#carousel1").carousel({ width: 500, height: 200 });
+                $("#carousel2").carousel({ width: "500px", height: "200", timer: 3000, cyclic: true});
+                $("#carousel3").carousel({ width: "500", height: 200, draggable: true, timer: 1000 });
+            }
+        </script>
+    </head>
+    <body>        
+        <!--<div class="console"></div>-->
+        <h2 style="margin: auto; text-align: center">This is the example of simple carousel non-draggable</h2>
+        <div id="carousel1">
+            <img src="images/Seychelles-Beach1.jpg"/>
+            <img src="images/Seychelles-Beach2.jpg"/>
+            <img src="images/Seychelles-Beach3.jpg"/>
+            <img src="images/Seychelles-Beach4.jpg"/>
+        </div>
+        <h2 style="margin: auto; text-align: center">Cyclic carousel with a timer of 3s</h2>
+        <div id="carousel2">
+            <img src="images/Seychelles-Beach4.jpg"/>
+            <img src="images/Seychelles-Beach3.jpg"/>
+            <img src="images/Seychelles-Beach2.jpg"/>
+            <img src="images/Seychelles-Beach1.jpg"/>
+        </div>
+        <h2 style="margin: auto; text-align: center">Carousel with a timer of 1s</h2>
+        <div id="carousel3">
+            <img src="images/Seychelles-Beach2.jpg"/>
+            <img src="images/Seychelles-Beach3.jpg"/>
+            <img src="images/Seychelles-Beach1.jpg"/>
+        </div>
+    </body>
+</html>

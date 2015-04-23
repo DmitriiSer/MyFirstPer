@@ -16,7 +16,7 @@
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    background: url(images/bg.JPG);
+    background: url(bg.JPG);
     margin: 0 auto;
     overflow: hidden;
     z-index: 10;
