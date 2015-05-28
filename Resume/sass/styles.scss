@@ -1,0 +1,33 @@
+$c: #434343;
+
+html, body {
+    margin: auto;
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    background-color: antiquewhite;
+}
+
+hr {
+    margin: auto;
+    width: 98%;
+    height: 1px;
+    background: black;
+    border-width: 0;
+/*    box-shadow: 4px 4px 0px gray;*/
+}
+hr.double {
+    height: 3px;
+    box-shadow: 0px 1px white, 0px 2px black, 0px 4px white, 0px 6px black;
+}
+.heading {
+    /*    display: block;*/
+}
+
+.address {
+    /*    display: block;*/
+    /*    float: left;*/
+}
+
+.address>div {
+    display: inline-block;
+}
