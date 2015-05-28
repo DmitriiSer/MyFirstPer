@@ -1,0 +1,32 @@
+html, body {
+    margin: auto;
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    background-color: $backgroundColor;
+    text-shadow: 1px 1px red;
+}
+
+hr {
+    margin: auto;
+    width: 98%;
+    height: 1px;
+    background: $hrColor;
+    border-width: 0;
+/*    box-shadow: 4px 4px 0px gray;*/
+}
+hr.triple {
+    height: $hrTripleHeight;
+    box-shadow: 0px ($hrTripleHeight / 2) $backgroundColor, 0px $hrTripleHeight $hrColor, 0px ($hrTripleHeight * 1.5) $backgroundColor, 0px ($hrTripleHeight * 2.5) $hrColor;
+}
+.heading {
+    /*    display: block;*/
+}
+
+.address {
+    /*    display: block;*/
+    /*    float: left;*/
+}
+
+.address>div {
+    display: inline-block;
+}
