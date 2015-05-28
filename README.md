@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #### Web projects
 ---
 This repository contains my own web projects		
