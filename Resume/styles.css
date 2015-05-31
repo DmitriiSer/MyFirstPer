@@ -1,34 +1,70 @@
-/* line 1, sass/_base.scss */
+@import url("http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900|Droid+Serif");
+@import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+/* line 3, sass/styles.scss */
 html, body {
   margin: auto;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
+  font-size: 62.5%;
   text-align: center;
   background-color: #faead6;
-  text-shadow: 1px 1px red; }
+  color: #333; }
 
-/* line 9, sass/_base.scss */
+/* line 11, sass/styles.scss */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Droid Serif", serif;
+  text-shadow: 1px 1px 2px #666666; }
+
+/* line 15, sass/styles.scss */
+section {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem; }
+
+/* line 19, sass/styles.scss */
 hr {
   margin: auto;
   width: 98%;
   height: 1px;
-  background: #000000;
-  border-width: 0;
-  /*    box-shadow: 4px 4px 0px gray;*/ }
+  background: #666666;
+  border-width: 0; }
 
-/* line 17, sass/_base.scss */
+/* line 26, sass/styles.scss */
 hr.triple {
-  height: 3px;
-  box-shadow: 0px 1.5px #faead6, 0px 3px #000000, 0px 4.5px #faead6, 0px 7.5px #000000; }
+  height: 2px;
+  box-shadow: 0px 1px #faead6, 0px 2px #666666, 0px 3px #faead6, 0px 5px #666666; }
 
-/* line 21, sass/_base.scss */
-.heading {
-  /*    display: block;*/ }
+/* line 31, sass/styles.scss */
+#heading ul {
+  display: inline-block;
+  margin: auto; }
+  /* line 34, sass/styles.scss */
+  #heading ul li {
+    display: inline;
+    float: left;
+    cursor: pointer;
+    text-shadow: 0px 8px 16px #666666; }
+  /* line 40, sass/styles.scss */
+  #heading ul li:hover {
+    background-color: rgba(166, 214, 230, 0.3); }
+  /* line 43, sass/styles.scss */
+  #heading ul i {
+    vertical-align: middle;
+    font-size: 0.5rem;
+    margin: auto 0.5rem;
+    text-shadow: none; }
+  /* line 49, sass/styles.scss */
+  #heading ul hr {
+    width: 100%; }
 
-/* line 25, sass/_base.scss */
-.address {
-  /*    display: block;*/
-  /*    float: left;*/ }
-
-/* line 30, sass/_base.scss */
-.address > div {
-  display: inline-block; }
+/* line 55, sass/styles.scss */
+#objective {
+  display: inline-block;
+  background-color: #f2c792;
+  width: 50%; }
+  /* line 59, sass/styles.scss */
+  #objective .columns {
+    -moz-column-count: 5;
+    -webkit-column-count: 5;
+    column-count: 5;
+    -moz-column-rule: 1px dashed #666666;
+    -webkit-column-rule: 1px dashed #666666;
+    column-rule: 1px dashed #666666; }

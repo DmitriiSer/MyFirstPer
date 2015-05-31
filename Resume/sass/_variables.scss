@@ -1,6 +1,15 @@
+//fonts
+$fontHeaders: 'Droid Serif', serif;
+$fontPrimary: 'Playfair Display', serif;
 //colors
 $backgroundColor: #faead6;
-$hrColor: #000000;
+$textColor: #333;
+$textShadowColor: lighten($textColor, 20);
+$hrColor: $textShadowColor;
+$listItemHoverColor: rgba(166, 214, 230, 0.3);
 
 //measurements
-$hrTripleHeight: 3px;
+$hrTripleHeight: 2px;
+
+//compass default variables
+$base-font-size: 16px;

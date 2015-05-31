@@ -1,5 +1,63 @@
-@import "compass";
-@import "susy";
+@import "imports";
 
-@import "variables";
-@import "base";
+html, body {
+    margin: auto;
+    font-family: $fontPrimary;
+    font-size: 62.5%;
+    text-align: center;
+    background-color: $backgroundColor;
+    color: $textColor;
+}
+#{headings()} {
+    font-family: $fontHeaders;
+    text-shadow: 1px 1px 2px $textShadowColor;
+}
+section {
+    font-family: $fontPrimary;
+    font-size: 2rem;
+}
+hr {
+    margin: auto;
+    width: 98%;
+    height: 1px;
+    background: $hrColor;
+    border-width: 0;
+}
+hr.triple {
+    height: $hrTripleHeight;
+    box-shadow: 0px ($hrTripleHeight / 2) $backgroundColor, 0px $hrTripleHeight $hrColor, 0px ($hrTripleHeight * 1.5) $backgroundColor, 0px ($hrTripleHeight * 2.5) $hrColor;
+}
+#heading {
+    ul {
+        display: inline-block;
+        margin: auto;
+        li {
+            display: inline;
+            float: left;
+            cursor: pointer;
+            text-shadow: 0px 8px 16px $textShadowColor;
+        }
+        li:hover {
+            background-color: $listItemHoverColor;
+        }
+        i {
+            vertical-align: middle;
+            font-size: 0.5rem;
+            margin: auto 0.5rem;
+            text-shadow: none;
+        }
+        hr {
+            width: 100%;
+        }
+    }
+}
+
+#objective {
+    display: inline-block;
+    background-color: darken($backgroundColor, 15);
+    width: 50%;
+    .columns {
+        @include column-count(5);
+        @include column-rule(1px, dashed, $hrColor);
+    }
+}
