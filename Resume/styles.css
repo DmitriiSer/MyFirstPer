@@ -1,70 +1,156 @@
-@import url("http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900|Droid+Serif");
+@import url("http://fonts.googleapis.com/css?family=Playfair+Display:400,700,900|Droid+Serif|Arvo|Cutive");
 @import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
 /* line 3, sass/styles.scss */
+body {
+  width: 90%; }
+
+/* line 4, sass/styles.scss */
 html, body {
   margin: auto;
-  font-family: "Playfair Display", serif;
-  font-size: 62.5%;
-  text-align: center;
-  background-color: #faead6;
-  color: #333; }
+  font-family: "Arvo", serif;
+  text-align: justify;
+  background-color: #D1DBBD;
+  color: #91AA9D; }
 
-/* line 11, sass/styles.scss */
+/* line 13, sass/styles.scss */
 h1, h2, h3, h4, h5, h6 {
   font-family: "Droid Serif", serif;
-  text-shadow: 1px 1px 2px #666666; }
+  text-align: center; }
 
-/* line 15, sass/styles.scss */
+/* line 18, sass/styles.scss */
+h2, h3, h4, h5 {
+  letter-spacing: 0.2rem;
+  margin: 0.5rem;
+  text-align: center; }
+
+/* line 23, sass/styles.scss */
+h5 {
+  text-align: left; }
+
+/* line 27, sass/styles.scss */
+.border-t {
+  border-top: 0.3vmin solid #FCFFF5; }
+
+/* line 28, sass/styles.scss */
+.border-b {
+  border-bottom: 0.3vmin solid #FCFFF5; }
+
+/* line 29, sass/styles.scss */
+.border-tb {
+  border-top: 0.3vmin solid #FCFFF5;
+  border-bottom: 0.3vmin solid #FCFFF5; }
+
+/* line 30, sass/styles.scss */
 section {
-  font-family: "Playfair Display", serif;
-  font-size: 2rem; }
+  font-family: "Arvo", serif;
+  padding: 1px 1%; }
 
-/* line 19, sass/styles.scss */
-hr {
+/* line 34, sass/styles.scss */
+#heading {
+  background-color: #04080a; }
+
+/* line 35, sass/styles.scss */
+#info {
   margin: auto;
-  width: 98%;
-  height: 1px;
-  background: #666666;
-  border-width: 0; }
+  text-align: center;
+  overflow: hidden; }
 
-/* line 26, sass/styles.scss */
-hr.triple {
-  height: 2px;
-  box-shadow: 0px 1px #faead6, 0px 2px #666666, 0px 3px #faead6, 0px 5px #666666; }
+/* line 42, sass/styles.scss */
+ul.horizontal {
+  margin: auto;
+  padding: 0px;
+  font-family: "Cutive", serif; }
+  /* line 46, sass/styles.scss */
+  ul.horizontal li {
+    display: inline-block;
+    text-shadow: 0px 1px 1px #FCFFF5; }
+    /* line 49, sass/styles.scss */
+    ul.horizontal li i {
+      margin: 1vmin; }
 
-/* line 31, sass/styles.scss */
-#heading ul {
-  display: inline-block;
-  margin: auto; }
-  /* line 34, sass/styles.scss */
-  #heading ul li {
-    display: inline;
-    float: left;
-    cursor: pointer;
-    text-shadow: 0px 8px 16px #666666; }
-  /* line 40, sass/styles.scss */
-  #heading ul li:hover {
-    background-color: rgba(166, 214, 230, 0.3); }
-  /* line 43, sass/styles.scss */
-  #heading ul i {
-    vertical-align: middle;
-    font-size: 0.5rem;
-    margin: auto 0.5rem;
-    text-shadow: none; }
-  /* line 49, sass/styles.scss */
-  #heading ul hr {
-    width: 100%; }
+/* line 52, sass/styles.scss */
+hr {
+  border-width: 0;
+  background: #FCFFF5;
+  height: 0.6vmin;
+  margin: 0px auto 0.3vmin; }
 
-/* line 55, sass/styles.scss */
+/* line 58, sass/styles.scss */
 #objective {
-  display: inline-block;
-  background-color: #f2c792;
-  width: 50%; }
-  /* line 59, sass/styles.scss */
-  #objective .columns {
-    -moz-column-count: 5;
-    -webkit-column-count: 5;
-    column-count: 5;
-    -moz-column-rule: 1px dashed #666666;
-    -webkit-column-rule: 1px dashed #666666;
-    column-rule: 1px dashed #666666; }
+  background-color: #193441; }
+
+/* line 59, sass/styles.scss */
+#experience {
+  background-color: #3E606F; }
+
+/* line 60, sass/styles.scss */
+#education {
+  background-color: #193441; }
+
+/* line 62, sass/styles.scss */
+.badge.hover, .badge:hover {
+  background-color: #204353;
+  box-shadow: inset 0 0 2vmin black, 0 0 2vmin 1vmin black; }
+  /* line 67, sass/styles.scss */
+  .badge.hover img, .badge:hover img {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%); }
+  /* line 68, sass/styles.scss */
+  .badge.hover span, .badge:hover span {
+    -webkit-filter: invert(100%);
+    filter: invert(100%); }
+
+/* line 70, sass/styles.scss */
+.badge-container {
+  position: relative;
+  max-height: 33vmin;
+  padding: 32px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 0.3vmin dashed red; }
+
+/* line 78, sass/styles.scss */
+.badge {
+  position: relative;
+  width: 10vmin;
+  min-width: 5px;
+  height: 10vmin;
+  min-height: 5px;
+  margin: 16px;
+  background-color: #D1DBBD;
+  color: #2e2442;
+  text-align: center;
+  white-space: nowrap;
+  box-shadow: inset 0px 0px 1vmin #193441, -1vmin 0px 1vmin #3E606F, 1vmin 0px 1vmin #3E606F;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px dashed black; }
+  /* line 95, sass/styles.scss */
+  .badge .inner {
+    width: 7vmin;
+    height: 7vmin;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    border: inherit; }
+  /* line 106, sass/styles.scss */
+  .badge img {
+    display: block;
+    margin: auto;
+    width: 5vmin;
+    border: inherit; }
+  /* line 112, sass/styles.scss */
+  .badge span {
+    display: block;
+    margin: 0 auto;
+    border: inherit; }
+  /* line 118, sass/styles.scss */
+  .badge a {
+    display: block;
+    border: inherit; }

@@ -1,1 +1,1 @@
-function f(){}
+$(function(){function a(){c.each(function(a,b){var c=$(this).find(".inner"),d=c.find("img"),e=c.height()-d.height(),f=c.find("span");f.css("font-size",e/f.length+"px"),f.css("line-height",e/f.length+"px")})}var b=$(".badge-container"),c=$(".badge");a(),b.css("height",b.height()),$(window).on("resize",a),c.on("mouseenter",function(a){b.css("height",b.height()),$(this).hasClass("velocity-animating")||$(this).velocity({rotateZ:360},"slow").velocity({rotateZ:0},0,function(){$(this).removeClass("hover")})}),c.on("mouseleave",function(a){b.removeAttr("style")})});

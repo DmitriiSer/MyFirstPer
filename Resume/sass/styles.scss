@@ -1,63 +1,124 @@
 @import "imports";
-
+//HTML and BODY
+body { width: 90%; }
 html, body {
     margin: auto;
     font-family: $fontPrimary;
-    font-size: 62.5%;
-    text-align: center;
-    background-color: $backgroundColor;
+    //font-size: 2vmin;//62.5%;
+    text-align: justify;
+    background-color: $pageBackgroundColor;
     color: $textColor;
 }
+//Headings
 #{headings()} {
     font-family: $fontHeaders;
-    text-shadow: 1px 1px 2px $textShadowColor;
+    text-align: center;
+    //text-shadow: 0px 0px 1px $textShadowColor;
 }
+#{headings(2,5)} {
+    letter-spacing: 0.2rem;
+    margin: 0.5rem;
+    text-align: center;
+}
+h5 {
+    text-align: left;
+}
+//
+.border-t { border-top: $border-width solid $borderColor; }
+.border-b { border-bottom: $border-width solid $borderColor; }
+.border-tb { border-top: $border-width solid $borderColor; border-bottom: $border-width solid $borderColor; }
 section {
     font-family: $fontPrimary;
-    font-size: 2rem;
+    padding: 1px 1%;
+}
+#heading { background-color: $headerBackgroundColor; }
+#info {
+    margin: auto;
+    //font-size: 1vw;
+    text-align: center;
+    //white-space: nowrap;
+    overflow: hidden;
+}
+ul.horizontal {
+    margin: auto;
+    padding: 0px;
+    font-family: $fontSecondary;
+    li {
+        display: inline-block;
+        text-shadow: 0px 1px 1px $textShadowColor;
+        i { margin: 1vmin; }
+    }
 }
 hr {
-    margin: auto;
-    width: 98%;
-    height: 1px;
-    background: $hrColor;
     border-width: 0;
+    background: $borderColor;
+    height: $border-width * 2;
+    margin: 0px auto $border-width;
 }
-hr.triple {
-    height: $hrTripleHeight;
-    box-shadow: 0px ($hrTripleHeight / 2) $backgroundColor, 0px $hrTripleHeight $hrColor, 0px ($hrTripleHeight * 1.5) $backgroundColor, 0px ($hrTripleHeight * 2.5) $hrColor;
-}
-#heading {
-    ul {
-        display: inline-block;
-        margin: auto;
-        li {
-            display: inline;
-            float: left;
-            cursor: pointer;
-            text-shadow: 0px 8px 16px $textShadowColor;
-        }
-        li:hover {
-            background-color: $listItemHoverColor;
-        }
-        i {
-            vertical-align: middle;
-            font-size: 0.5rem;
-            margin: auto 0.5rem;
-            text-shadow: none;
-        }
-        hr {
-            width: 100%;
-        }
-    }
-}
+#objective { background-color: $backgroundColor; }
+#experience { background-color: $c4; }
+#education { background-color: $backgroundColor; }
 
-#objective {
-    display: inline-block;
-    background-color: darken($backgroundColor, 15);
-    width: 50%;
-    .columns {
-        @include column-count(5);
-        @include column-rule(1px, dashed, $hrColor);
+.badge.hover, .badge:hover {
+    background-color: lighten($c5, 5);//invert($pageBackgroundColor);//rgba($c1, 0.3);
+    box-shadow: inset 0 0 ($badge-size / 5) /*$
+        */ darken($c5, 20),
+        0 0 ($badge-size / 5) $badge-shadow-size darken($c5, 20);
+    img { @include filter(grayscale(100%)); }
+    span { @include filter(invert(100%)); }
+}
+.badge-container {
+    position: relative;
+    max-height: 33vmin; //50%;
+    padding: 32px; //2vmin;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: $border-width dashed red;
+}
+.badge {
+    position: relative;
+    width: $badge-size;
+    min-width: $badge-min-size;
+    height: $badge-size;
+    min-height: $badge-min-size;
+    //margin: 2vmin;
+    margin: 16px;
+    background-color: $pageBackgroundColor;
+    color: invert($pageBackgroundColor);
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: inset 0px 0px $badge-shadow-size $c5, -$badge-shadow-size 0px $badge-shadow-size $c4, $badge-shadow-size 0px $badge-shadow-size $c4;
+    @include box-sizing(border-box);
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px dashed black;
+    .inner {
+        width: $badge-inner-container-size;
+        height: $badge-inner-container-size;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        border: inherit;
     }
+    img {
+        display: block;
+        margin: auto;
+        width: $badge-img-size;
+        border: inherit;
+    }
+    span {
+        display: block;
+        
+        margin: 0 auto;
+        border: inherit;
+    }
+    a {
+        display: block;
+        border: inherit;
+    }
+}
+.badge.absolute {
 }

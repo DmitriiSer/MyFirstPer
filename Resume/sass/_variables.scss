@@ -1,15 +1,35 @@
 //fonts
 $fontHeaders: 'Droid Serif', serif;
-$fontPrimary: 'Playfair Display', serif;
+$fontPrimary: 'Arvo', serif;
+//$fontPrimary: 'Playfair Display', serif;
+$fontSecondary: 'Cutive', serif;
 //colors
-$backgroundColor: #faead6;
-$textColor: #333;
-$textShadowColor: lighten($textColor, 20);
-$hrColor: $textShadowColor;
+//palette
+$c1: #FCFFF5;
+$c2: #D1DBBD;
+$c3: #91AA9D;
+$c4: #3E606F;
+$c5: #193441;
+//background colors
+$pageBackgroundColor: $c2;
+$bodyBackgroundColor: $c4;
+$backgroundColor: $c5;//#faead6;
+$headerBackgroundColor: darken($backgroundColor, 15);
+//text colors
+$textColor: $c3;//#333;
+$textShadowColor: $c1;//lighten($textColor, 20);
+//element colors
+$borderColor: $textShadowColor;
 $listItemHoverColor: rgba(166, 214, 230, 0.3);
 
 //measurements
-$hrTripleHeight: 2px;
+
+$border-width: 0.3vmin;
+//badge variables
+$badge-size: 10vmin; //20vmin;
+$badge-min-size: 5px; //128px;
+$badge-inner-container-size: $badge-size * 0.7;
+$badge-img-size: $badge-size * 0.5;
+$badge-shadow-size: $badge-size / 10;
 
 //compass default variables
-$base-font-size: 16px;
