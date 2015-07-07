@@ -1,8 +1,7 @@
 //fonts
 $fontHeaders: 'Droid Serif', serif;
 $fontPrimary: 'Arvo', serif;
-//$fontPrimary: 'Playfair Display', serif;
-$fontSecondary: 'Cutive', serif;
+$fontSecondary: 'Slabo 27px', serif;
 //colors
 //palette
 $c1: #FCFFF5;
@@ -17,18 +16,17 @@ $backgroundColor: $c5;//#faead6;
 $headerBackgroundColor: darken($backgroundColor, 15);
 //text colors
 $textColor: $c3;//#333;
-$textShadowColor: $c1;//lighten($textColor, 20);
+$textShadowColor: /*$c1;*/ darken($textColor, 10);
 //element colors
 $borderColor: $textShadowColor;
 $listItemHoverColor: rgba(166, 214, 230, 0.3);
 
 //measurements
-
 $border-width: 0.3vmin;
 //badge variables
-$badge-size: 10vmin; //20vmin;
-$badge-min-size: 5px; //128px;
-$badge-inner-container-size: $badge-size * 0.7;
+$badge-min-size: 64px; //10vmin;
+$badge-size: 96px; //15vmin;
+$badge-inner-container-size: $badge-size * sin(pi() / 4);
 $badge-img-size: $badge-size * 0.5;
 $badge-shadow-size: $badge-size / 10;
 
