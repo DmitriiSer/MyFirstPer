@@ -1,0 +1,27 @@
+{
+    "manifest_version": 2,
+    "name": "Foodnetwork Recipe to Cozi Meals Plugin",
+    "description": "This extension analyzes Foodnetwork Recipe and add it to Cozi Meals",
+    "version": "0.0.1",
+    "browser_action": {
+        "default_icon": "icons/icon.png",
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "scripts": ["js/background.js"]
+    },
+    "content_scripts": [{
+        "matches": [ "*://www.foodnetwork.com/*", "*://www.yandex.ru/*" ],
+        "js": ["js/contentFoodnetwork.js"],
+        "run_at": "document_start",
+        "all_frames" : true
+    }, {
+        "matches": [ "*://my.cozi.com/*" ],
+        "js": [ "js/contentCozi.js"],
+        "run_at": "document_end",
+        "all_frames" : true
+    }],
+    "permissions": [ "tabs", "*://www.foodnetwork.com/*",
+                    "*://my.cozi.com/*",
+                    "*://www.yandex.ru/*" ]
+}
