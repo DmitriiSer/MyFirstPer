@@ -17,7 +17,13 @@ This repository contains my own web projects
 
 * [Resume](https://github.com/DmitriiSer/WebProjects/tree/master/Resume)  
  (My own animated resume)
+ * **TODO:**  
+   *1) Improve intro animation with HTML5 Canvas*  
+   *2) Fix specialty badges*  
 
 * Chrome Extensions
   * [Foodnetwork Recipe to Cozi Meals](https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals)  
  (Chrome/Opera extension that allows to transfer the whole recipe from Foodnetwork recipe page to Cozi Meals recipe)
+ * **TODO:**  
+   *1) Show warning if recipe is already exists*  
+   *2) Create extension icon*  
