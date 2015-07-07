@@ -1,3 +1,6 @@
+.gitignore
+node_modules
+
 # Compiled source (source: http://goo.gl/hVcp7b) #
 ##################################################
 *.com
