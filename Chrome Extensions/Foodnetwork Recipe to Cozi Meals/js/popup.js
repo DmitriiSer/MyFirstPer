@@ -1,12 +1,12 @@
-//variables
+// variables
 foodnetworkAddress = null;
-//log messages in tab's console
+// log messages in tab's console
 function window_log(message, completed) {
     chrome.tabs.query({active: true}, function(tabs) {
         chrome.tabs.sendMessage(tabs[0].id, {console: message}, completed);
     });
 }
-//reload icons in popup page
+// reload icons in popup page
 function reloadIcons() {
     var icons = document.getElementsByClassName("icon");
     [].forEach.call(icons, function(icon) {
@@ -22,92 +22,31 @@ function reloadIcons() {
             icon.style.backgroundImage = "url(" + icon_name + ")";        
     });
 }
-//parse foodnetwork page and find recipe title
-function parseTitle(pageHTML) {
-    var title = "";
-    try {
-        var page = document.createElement('body');
-        page.innerHTML = pageHTML;
-        title = page.getElementsByTagName("h1")[0];
-        title = title.innerHTML;
-    } catch(e) {
-        console.error(e);
-    }
-    return title;
-}
-//parse foodnetwork page and find all the ingredients
-function parseIngredients(pageHTML) {
-    var ingredients = "";
-    try {
-        var page = document.createElement('body');
-        page.innerHTML = pageHTML;
-        var items = page.getElementsByClassName("ingredients")[0];
-        items = items.getElementsByTagName("ul")[0];
-        items = items.getElementsByTagName("li");
-        for (var i = 0; i < items.length; i++) {
-            var ingr = items[i].innerHTML;
-            while (ingr.includes("<")) {
-                ingr = ingr.substr(0, ingr.indexOf("<")) + 
-                    ingr.substr(ingr.indexOf(">") + 1);
-            }
-            ingredients += ingr.trim() + "\r\n";
-        }
-    } catch(e) {
-        console.error(e);
-    }
-    return ingredients;
-}
-//parse foodnetwork page and find recipe directions
-function parseDirections(pageHTML) {
-    var directions = "";
-    try {
-        var page = document.createElement('body');
-        page.innerHTML = pageHTML;
-        var items = page.getElementsByClassName("directions")[0];
-        items = items.getElementsByTagName("p");
-        for (var i = 0; i < items.length; i++) {
-            var dir = items[i].innerHTML;
-            while (dir.includes("<")) {
-                dir = dir.substr(0, dir.indexOf("<")) + 
-                    dir.substr(dir.indexOf(">") + 1);
-            }
-            directions += dir.trim() + "\r\n";
-        }
-    } catch(e) {
-        console.error(e);
-    }
-    return directions;
-}
-
+// button click handler
 function btnClick() {
     chrome.tabs.query({ active: true }, function(tabs) {
         if (
             foodnetworkAddress.includes("www.foodnetwork.com/recipes") ||
             foodnetworkAddress.includes(".html")
         ) {
-            chrome.tabs.sendMessage(tabs[0].id, { get: "pageHTML" }, function(response) {
-                //send fields of a meal to background.js script
-                chrome.extension.sendRequest({ set: "title", value: parseTitle(response) });
-                chrome.extension.sendRequest({ set: "link", value: foodnetworkAddress });
-                chrome.extension.sendRequest({ set: "ingredients", value: parseIngredients(response) });
-                chrome.extension.sendRequest({ set: "directions", value: parseDirections(response) });
-                //create Cozi Meals tab
-                var newURL = "https://my.cozi.com/meals/?box";
-                //newURL = "http://www.yandex.ru";
-                chrome.tabs.create({ url: newURL });
-            });
+            //create Cozi Meals tab
+            chrome.tabs.create({ url: "https://my.cozi.com/meals/?box" });
         }
     });
 }
-//extension PopUp
+// extension PopUp
 document.addEventListener("DOMContentLoaded", function() {    
     //add button listener
     var checkPageButton = document.getElementById("btn");
     checkPageButton.addEventListener('click', btnClick);
+    //reload icons in popup page
     reloadIcons();
     //
     chrome.tabs.query({ active: true }, function(tabs) {
         foodnetworkAddress = tabs[0].url;
+        //set 'link' field of a meal into a variable in background.js
+        chrome.extension.sendRequest({ set: "link", value: foodnetworkAddress });
+        // check if popup was shown in a page with a recipe
         var table = document.getElementsByTagName("table")[0];
         var stripes = document.getElementById("stripes");
         if (
@@ -122,7 +61,5 @@ document.addEventListener("DOMContentLoaded", function() {
             table.classList.add("btnDisabled");
             stripes.classList.add("striped");
         }
-        //
-        //btnClick();
     });
 });

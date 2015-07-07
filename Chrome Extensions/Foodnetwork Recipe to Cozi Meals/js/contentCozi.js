@@ -61,8 +61,7 @@ var buttonNewElem = function() { return document.getElementById("buttonNew"); },
         return elem;
     }
 
-//function waitUntilNotNull(request, setWhat, interval, timeout) {
-function waitUntilNotNull(do, interval, timeout) {
+function waitUntilNotNull(action, done, interval, timeout) {
     if (interval === undefined || typeof interval != 'number')
         interval = 500;
     if (timeout === undefined || typeof timeout != 'number')
@@ -70,39 +69,45 @@ function waitUntilNotNull(do, interval, timeout) {
     var timer = setInterval(function() {
         if (timeout <= 0) {
             clearInterval(timer);
+            done(false);
         }
         timeout -= interval;
-        var response = do();
-        if (response != null)
+        if (action() != null) {
             clearInterval(timer);
-        /*chrome.extension.sendRequest(request, function(response) {
-            if (response != null) {
-                console.info(request + " => " + response);
-                setWhat(response);
-                clearInterval(timer);
-            };
-        });*/
+            done(true);            
+        }
     }, interval);
 }
 
 //send requests for all the fields of a meal
 //wait for 'title' to be filled
-//waitUntilNotNull({ get: "title" }, function(r) { title = r; });
 waitUntilNotNull(function() {
-    chrome.extension.sendRequest({ get: "title" }, function(response) {
-        if (response != null) {
-            console.info("{ get: 'title' } => " + response);
-            title = response;
-            return response;
-        }
+    chrome.extension.sendRequest({ get: "title" }, function(response) { 
+        if (response != null) { title = response; }
     });
+    return title;
 });
 //wait for 'link' to be filled
-/*waitUntilNotNull({ get: "link" }, function(r) { link = r; });
+waitUntilNotNull(function() {
+    chrome.extension.sendRequest({ get: "link" }, function(response) {
+        if (response != null) { link = response; }
+    });
+    return link; 
+});
 //wait for 'ingredients' to be filled
-waitUntilNotNull({ get: "ingredients" }, function(r) { ingredients = r; });
+waitUntilNotNull(function() {
+    chrome.extension.sendRequest({ get: "ingredients" }, function(response) {
+        if (response != null) { ingredients = response; }
+    });
+    return ingredients;
+});
 //wait for 'directions' to be filled
-waitUntilNotNull({ get: "directions" }, function(r) { directions = r; });*/
+waitUntilNotNull(function() {
+    chrome.extension.sendRequest({ get: "directions" }, function(response) {
+        if (response != null) { directions = response; }
+    });
+    return directions;
+});
 
 //timer timeouts
 var timerTimeout = 15000;
@@ -135,7 +140,7 @@ var timer = setInterval(function() {
             insertTextAtCursor(directions);
             //press Save button
             button = buttonSaveElem();
-            //button.click();
+            button.click();
             //clear waiting timer
             clearInterval(timer);
         } catch(e) {
