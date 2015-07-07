@@ -7,11 +7,13 @@
         <link rel="stylesheet" href="styles.css">
         <!--scripts-->
         <script src="http://localhost:35729/livereload.js"></script>
-        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js"></script>
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="js/jquery.textfill.min.js"></script>
+        <script src="js/velocity.min.js"></script>
         <script src="scripts.js"></script>
     </head>
-    <body>
+<!--    <body>-->
+    <body style="display: none">
         <section id="heading">
             <h1>Dmitrii Serikov</h1>
             <div class="border-tb" id="info">
@@ -19,7 +21,7 @@
                     <li>3293 Barrington Dr.<i class="fa fa-certificate"></i></li>
                     <li>Medina, OH 44256<i class="fa fa-certificate"></i></li>
                     <li>(216) 970-907-1<i class="fa fa-certificate"></i></li>
-                    <li>dmitrii.serikov@gmail.com</li>
+                    <li><a href="mailto:dmitrii.serikov@gmail.com" style="none">dmitrii.serikov@gmail.com</a></li>
                 </ul>
                 <hr id="two_px">
             </div>
@@ -32,63 +34,150 @@
             <div class="border-tb">
                 <h3>Specialties</h3>
             </div>
-            <ul class="horizontal badge-container">
-                <!--"http://findicons.com/icon/download/88943/java/128/png"-->
-                <li class="badge">
-                    <div class="inner">
-                        <img src="images/java.png"/><span>Java SE</span>
-                    </div>
-                </li>
-                <li class="badge">
-                    <div class="inner">
-                        <img src="images/c++.png"/><span>C++</span>
-                    </div>
-                </li>
-                <li class="badge">
-                    <div class="inner">
-                        <img src="images/html5.png"/><span>HTML /</span><span>HTML5</span>
-                    </div>
-                </li>
-                <li class="badge">
-                    <div class="inner">
-                        <img src="images/css3.png"/><span>CSS /</span><span>CSS3</span>
-                    </div>
-                </li>
-                <li  class="badge">
-                    <div class="inner">
-                        <img src="images/javascript.png"/><span>JavaScript</span>
-                    </div>
-                </li>
-                <li class="badge">
-                    <div class="inner">
-                        <img src="images/jquery.png"/><span>jQuery</span>
-                    </div>
-                </li>
-                <li class="badge">
-                    <a href="http://julian.com/research/velocity/">
-                        <div class="inner">
-                            <span>Velocity.js</span>
-                        </div>
-                    </a>
-                </li>
-                <li class="badge">
-                    <div class="inner">
-                        <img src="images/git.png"/><span>Git</span>
-                    </div>
-                </li>
-                <li class="badge">
-                    <div class="inner">
-                        <img src="images/github.png"/><span>GitHub</span>
-                    </div>
-                </li>
-            </ul>
+            <table>
+                <tr>
+                    <td rowspan="2" width="50%">
+                        <ul class="badge-container">
+                            <!--<li class="badge">
+                                <div class="background" style="background-image: url('images/java.png')"></div>
+                                <div class="inner">
+                                    <img src="images/java.png"/><div><span>Java SE</span></div>
+                                </div>
+                            </li> <!--badge Java SE-->
+                        </ul>
+                    </td>
+                    <td height="150">
+                        <span></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="150">
+                        <span></span>
+                    </td>
+                </tr>
+            </table>
+            <div style="display: table-cell">
+                <ul class="badge-container">
+                    <li class="badge">
+                        <a href="http://www.oracle.com/technetwork/java/javase/overview/index.html">
+                            <div class="background" style="background-image: url('images/java.png')"></div>
+                            <div class="inner">
+                                <img src="images/java.png"/><div><span>Java SE</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge Java SE-->
+                    <li class="badge">
+                        <a href="http://www.cplusplus.com/">
+                            <div class="background" style="background-image: url('images/c++.png')"></div>
+                            <div class="inner">
+                                <img src="images/c++.png"/><div><span>C++</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge C++-->
+                    <li class="badge">
+                        <a href="http://www.w3.org/html/">
+                            <div class="background" style="background-image: url('images/html5.png')"></div>
+                            <div class="inner">
+                                <img src="images/html5.png"/>
+                                <div><span>HTML / HTML5</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge HTML-->
+                    <li class="badge">
+                        <a href="http://www.w3.org/Style/CSS/">
+                            <div class="background" style="background-image: url('images/css3.png')"></div>                    
+                            <div class="inner">
+                                <img src="images/css3.png"/><div><span>CSS / CSS3</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge CSS-->
+                    <li  class="badge">
+                        <a href="http://en.wikipedia.org/wiki/JavaScript">
+                            <div class="background" style="background-image: url('images/javascript.png')"></div>                    
+                            <div class="inner">
+                                <img src="images/javascript.png"/><div><span>JavaScript</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge JavaScript-->
+                </ul>
+            </div>
+            <div style="display: table-cell">
+                <ul class="badge-container">
+                    <li class="badge">
+                        <a href="https://jquery.com/">
+                            <div class="background" style="background-image: url('images/jquery.png')"></div>                    
+                            <div class="inner">
+                                <img src="images/jquery.png"/><div><span>jQuery</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge jQuery-->
+                    <li class="badge">
+                        <a href="http://julian.com/research/velocity/">
+                            <div class="inner">
+                                <div class="center"><span class="center">Velocity.js</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge Velocity.js-->
+                </ul>
+            </div>
+            <div style="display: table-cell">
+                <ul class="badge-container">
+                    <li class="badge">
+                        <a href="https://netbeans.org/">
+                            <div class="background" style="background-image: url('images/netbeans.png')"></div>
+                            <div class="inner">
+                                <img src="images/netbeans.png"/><div><span>NetBeans</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge NetBeans-->
+                    <li class="badge">
+                        <a href="https://eclipse.org/">
+                            <div class="background" style="background-image: url('images/eclipse.png')"></div>
+                            <div class="inner">
+                                <img src="images/eclipse.png"/><div><span>Eclipse</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge Eclipse-->
+                    <li class="badge">
+                        <a href="https://git-scm.com/">
+                            <div class="background" style="background-image: url('images/git.png')"></div>
+                            <div class="inner">
+                                <img src="images/git.png"/><div><span>Git</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge Git-->
+                    <li class="badge">
+                        <a href="https://github.com/DmitriiSer/">
+                            <div class="background" style="background-image: url('images/github.png')"></div>
+                            <div class="inner">
+                                <img src="images/github.png"/><div><span>GitHub</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge GitHub-->
+                    <li class="badge">
+                        <a href="http://www.microsoft.com/windows/">
+                            <div class="background" style="background-image: url('images/windows.png')"></div>
+                            <div class="inner">
+                                <img src="images/windows.png"/><div><span>Windows</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge Windows-->
+                    <li class="badge">
+                        <a href="http://en.wikipedia.org/wiki/Object-oriented_programming">
+                            <div class="inner">
+                                <div class="center"><span class="center">OOP</span></div>
+                            </div>
+                        </a>
+                    </li> <!--badge OOP Principles-->
+                </ul>
+            </div>
         </section> <!--objective-->
         <section id="experience">
             <div class="border-tb">
                 <h3>Professional Experiense</h3>
             </div class="section-box">
             <div class="section-box no-top no-bottom">
-                <h5>LLC "EC EAC" - Saint-Petersburg, Russia</h5>
+                <h5><a href="http://smartmetering.ru/">LLC "EC EAC" - Saint-Petersburg, Russia</a></h5>
                 <p><u>Manager of Department of Maintaning Servers</u>, September 2009 – May 2015</p>
                 <ul>
                     Key Results:
