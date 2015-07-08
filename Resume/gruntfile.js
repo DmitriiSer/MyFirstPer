@@ -1,16 +1,16 @@
 module.exports = function(grunt) {
     grunt.registerTask('default', ['watch']);
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    /*grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-uglify');*/
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-compass');
     grunt.initConfig({
-        copy: {
+        /*copy: {
             main: {
                 files: {
                     'scripts.js': ['js/scripts.js']
                 } //files
-            }
+            } //main
         }, //copy
         uglify: {
             my_target: {
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
                     'scripts.js': ['js/scripts.js']
                 } //files
             } //my_target
-        }, //uglify
+        }, //uglify*/
         compass: {
             dev: {
                 options: {
@@ -35,10 +35,10 @@ module.exports = function(grunt) {
                 files: ['sass/*.scss'],
                 tasks: ['compass:dev']
             }, //sass
-            scripts: {
+            /*scripts: {
                 files: ['js/*.js'],
                 tasks: ['copy']//['uglify']
-            } //scripts
+            } //scripts*/
         } //watch
     }) //initConfig
 } //exports
