@@ -35,10 +35,10 @@ module.exports = function(grunt) {
                 files: ['sass/*.scss'],
                 tasks: ['compass:dev']
             }, //sass
-            /*scripts: {
+            scripts: {
                 files: ['js/*.js'],
-                tasks: ['copy']//['uglify']
-            } //scripts*/
+                //tasks: ['copy']//['uglify']
+            } //scripts
         } //watch
     }) //initConfig
 } //exports
