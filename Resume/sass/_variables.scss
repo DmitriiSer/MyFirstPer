@@ -26,8 +26,8 @@ $border-width: 2px;
 //badge variables
 $badge-min-size: 64px; //10vmin;
 $badge-size: 96px; //15vmin;
+$badge-shadow-size: $badge-size / 10;
+$badge-margin: $badge-shadow-size * 1.4;
+//$badge-margin: $badge-size / 10;
 $badge-inner-container-size: $badge-size * sin(pi() / 4);
 $badge-img-size: $badge-size * 0.5;
-$badge-shadow-size: $badge-size / 10;
-
-//compass default variables
