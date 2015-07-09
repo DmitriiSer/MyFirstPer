@@ -4,12 +4,14 @@
         <!--meta-->
         <meta charset="utf-8">
         <!--stylesheets-->
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
         <link rel="stylesheet" href="styles.css">
         <!--scripts-->
         <script src="http://localhost:35729/livereload.js"></script>
         <script src="js/jquery-1.11.3.min.js"></script>
-        <script src="js/jquery.textfill.min.js"></script>
-        <script src="js/velocity.min.js"></script>
+        <!--<script src="js/jquery.textfill.min.js"></script>-->
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src="js/velocity.min.js"></script>  
         <script src="js/scripts.js"></script>
     </head>
     <body>
@@ -36,26 +38,29 @@
             </div>
             <table>
                 <tr>
-                    <td rowspan="2" width="40%">
+                    <td id="main" rowspan="1" width="50%">
+                        Main:
                         <ul class="badge-container">
                             <li class="badge">
-                                <a href="http://www.oracle.com/technetwork/java/javase/overview/index.html">
+                                <a href="http://www.oracle.com/technetwork/java/javase/overview/index.html" title="Java SE">
                                     <div class="background" style="background-image: url('images/java.png')"></div>
                                     <div class="inner">
-                                        <img src="images/java.png"/><div><span>Java SE</span></div>
+                                        <img src="images/java.png"/>
+                                        <div>Java SE</div>
                                     </div>
                                 </a>
                             </li> <!--badge Java SE-->
                             <li class="badge">
-                                <a href="http://www.cplusplus.com/">
+                                <a href="http://www.cplusplus.com/" title="C++">
                                     <div class="background" style="background-image: url('images/c++.png')"></div>
                                     <div class="inner">
-                                        <img src="images/c++.png"/><div><span>C++</span></div>
+                                        <img src="images/c++.png"/>
+                                        <div><span>C++</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge C++-->
                             <li class="badge">
-                                <a href="http://www.w3.org/html/">
+                                <a href="http://www.w3.org/html/" title="HTML / HTML5">
                                     <div class="background" style="background-image: url('images/html5.png')"></div>
                                     <div class="inner">
                                         <img src="images/html5.png"/>
@@ -64,35 +69,41 @@
                                 </a>
                             </li> <!--badge HTML-->
                             <li class="badge">
-                                <a href="http://www.w3.org/Style/CSS/">
+                                <a href="http://www.w3.org/Style/CSS/" title="CSS / CSS3">
                                     <div class="background" style="background-image: url('images/css3.png')"></div>                    
                                     <div class="inner">
-                                        <img src="images/css3.png"/><div><span>CSS / CSS3</span></div>
+                                        <img src="images/css3.png"/>
+                                        <div><span>CSS / CSS3</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge CSS-->
-                            <li  class="badge">
-                                <a href="http://en.wikipedia.org/wiki/JavaScript">
+                            <li class="badge">
+                                <a href="http://en.wikipedia.org/wiki/JavaScript" title="JavaScript">
                                     <div class="background" style="background-image: url('images/javascript.png')"></div>                    
                                     <div class="inner">
-                                        <img src="images/javascript.png"/><div><span>JavaScript</span></div>
+                                        <img src="images/javascript.png"/>
+                                        <div><span>JavaScript</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge JavaScript-->
                         </ul>
                     </td>
-                    <td height="">
+                </tr>
+                <tr>
+                    <td id="libs">
+                        Libraries:
                         <ul class="badge-container">
                             <li class="badge">
-                                <a href="https://jquery.com/">
-                                    <div class="background" style="background-image: url('images/jquery.png')"></div>                    
+                                <a href="https://jquery.com/" title="jQuery">
+                                    <div class="background" style="background-image: url('images/jquery.png')"></div>
                                     <div class="inner">
-                                        <img src="images/jquery.png"/><div><span>jQuery</span></div>
+                                        <img src="images/jquery.png"/>
+                                        <div><span>jQuery</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge jQuery-->
                             <li class="badge">
-                                <a href="http://julian.com/research/velocity/">
+                                <a href="http://julian.com/research/velocity/" title="Velocity.js">
                                     <div class="inner">
                                         <div class="center"><span class="center">Velocity.js</span></div>
                                     </div>
@@ -102,50 +113,56 @@
                     </td>
                 </tr>
                 <tr>
-                    <td height="150">
+                    <td id="environments">
+                        Environments:
                         <ul class="badge-container">
                             <li class="badge">
-                                <a href="https://netbeans.org/">
+                                <a href="https://netbeans.org/" title="NetBeans">
                                     <div class="background" style="background-image: url('images/netbeans.png')"></div>
                                     <div class="inner">
-                                        <img src="images/netbeans.png"/><div><span>NetBeans</span></div>
+                                        <img src="images/netbeans.png"/>
+                                        <div><span>NetBeans</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge NetBeans-->
                             <li class="badge">
-                                <a href="https://eclipse.org/">
+                                <a href="https://eclipse.org/" title="Eclipse">
                                     <div class="background" style="background-image: url('images/eclipse.png')"></div>
                                     <div class="inner">
-                                        <img src="images/eclipse.png"/><div><span>Eclipse</span></div>
+                                        <img src="images/eclipse.png"/>
+                                        <div><span>Eclipse</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge Eclipse-->
                             <li class="badge">
-                                <a href="https://git-scm.com/">
+                                <a href="https://git-scm.com/" title="Git">
                                     <div class="background" style="background-image: url('images/git.png')"></div>
                                     <div class="inner">
-                                        <img src="images/git.png"/><div><span>Git</span></div>
+                                        <img src="images/git.png"/>
+                                        <div><span>Git</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge Git-->
                             <li class="badge">
-                                <a href="https://github.com/DmitriiSer/">
+                                <a href="https://github.com/DmitriiSer/" title="GitHub">
                                     <div class="background" style="background-image: url('images/github.png')"></div>
                                     <div class="inner">
-                                        <img src="images/github.png"/><div><span>GitHub</span></div>
+                                        <img src="images/github.png"/>
+                                        <div><span>GitHub</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge GitHub-->
                             <li class="badge">
-                                <a href="http://www.microsoft.com/windows/">
+                                <a href="http://www.microsoft.com/windows/" title="Windows">
                                     <div class="background" style="background-image: url('images/windows.png')"></div>
                                     <div class="inner">
-                                        <img src="images/windows.png"/><div><span>Windows</span></div>
+                                        <img src="images/windows.png"/>
+                                        <div><span>Windows</span></div>
                                     </div>
                                 </a>
                             </li> <!--badge Windows-->
                             <li class="badge">
-                                <a href="http://en.wikipedia.org/wiki/Object-oriented_programming">
+                                <a href="http://en.wikipedia.org/wiki/Object-oriented_programming" title="OOP">
                                     <div class="inner">
                                         <div class="center"><span class="center">OOP</span></div>
                                     </div>
