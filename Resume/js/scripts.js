@@ -1,4 +1,7 @@
 $(function() {
+    $( document ).tooltip({
+        track: true
+    });
     var bdgContainer = $(".badge-container"),
         bdgs = $(".badge"),
         sections = $("section");
@@ -140,7 +143,6 @@ $(function() {
             for (var j = 0; j < columns; j++)
                 drawSquare(obj, { x: j * $tSize, y: i * $tSize }, [], 0.2);
     }
-
     function drawPopingSquares(obj, rows, columns) {
         //var popSquareDivCount = rows * columns / 10;
         var popSquareDivCount = 5;
@@ -202,8 +204,8 @@ $(function() {
     }
     function introAnimation() {
         //animate triangles
-        animateBackground(trianglesHaveBeenAnimated);
         return;
+        animateBackground(trianglesHaveBeenAnimated);
         //wait until triangles have been animated
         trianglesHaveBeenAnimated = true;
         var int = setInterval(function() {
@@ -251,9 +253,7 @@ $(function() {
                 text.velocity({
                     width: $(this).width(),
                     height: $(this).height()
-                }, {
-                    duration: "fast",
-                    progress: function() { text.textfill({maxFontPixels : 1000}); } });
+                }, "fast");
             }
         } else {
             img.velocity("stop");
@@ -276,32 +276,120 @@ $(function() {
             text.velocity({
                 width: "100%",
                 height: "100%"
-            }, {
-                duration: "fast",
-                progress: function() { text.textfill({maxFontPixels : 1000}); } });
+            }, "fast");
         }
     });
+
+    // Helper: fit text into container size
+    $.fn.fitText = function() {
+        var e = $(this);
+        if (e.width() != undefined && e.width() > 0 &&
+            e.height() != undefined && e.height() > 0) {
+            console.log(e[0].innerText);            
+        }
+    }
+    //Helper: badge size change
+    var setBadgeSize = function(bdg, size, speed) {
+        var minSize = 0;
+        try {
+            if (bdg.css("min-width") != undefined)
+                minSize = parseInt(bdg.css("min-width"));
+            else if (bdg.css("min-height") != undefined)
+                minSize = parseInt(bdg.css("min-height"));
+        } catch(e) {
+            minSize = 0;
+        }
+        if (size < minSize)
+            size = minSize; 
+        if (speed === undefined)
+            speed = "slow";
+        var bdgInner         = bdg.find(".inner"),
+            bdgInnerSize     = size * Math.sin(Math.PI / 4),
+            bdgImg           = bdgInner.find("img"),
+            bdgImgSize       = 0.5 * size,
+            bdgInnerDiv      = bdgInner.find("div"),
+            bdgInnerDivSize  = bdgInnerSize - bdgImgSize,
+            bdgInnerSpan     = bdgInner.find("span");
+        bdg.velocity("stop")
+            .velocity({
+            width: size,
+            height: size }, speed);
+        bdgInner.velocity("stop")
+            .velocity({
+            width: bdgInnerSize,
+            height: bdgInnerSize }, speed);
+        bdgImg.velocity("stop")
+            .velocity({
+            width: bdgImgSize,
+            height: bdgImgSize }, speed);
+        bdgInnerDiv.velocity("stop")
+            .velocity({
+            width: bdgInnerSize,
+            height: bdgInnerDivSize }, {
+            duration: speed,
+            progress: function() {
+                //bdgInnerSpan.position().top = "100px";
+                //bdgInnerSpan.position().top = "100px";
+                //bdgInnerDiv.fitText();
+            }
+        });
+    }
+    // Helper: badge in table cell threshold
+    var badgeInACellThreshold = function(bdgCount) {
+        var bdgMinSize = parseInt(bdgs.css("min-width")),
+            bdgMarginLeft = parseInt(bdgs.css("marginLeft")),
+            bdgMarginRight = parseInt(bdgs.css("marginRight"));
+        console.debug("bdgMinSize = " + bdgMinSize);
+        console.debug("bdgMarginLeft = " + bdgMarginLeft);
+        console.debug("bdgMarginRight = " + bdgMarginRight);
+        return (bdgCount * (bdgMinSize + bdgMarginLeft) + bdgMarginRight);
+    }
+    // Helper: responsive badges
+    var responsiveBbadges = function() {        
+        var bdg = $(eTd).find(".badge");
+        bdg.each(function(n, eBdg) {
+            console.log(
+                badgeInACellThreshold(4) + " " + $(eTd).width() + " " +
+                badgeInACellThreshold(3) + " " + $(eTd).width()
+            );
+            if ($(eTd).width() < badgeInACellThreshold(6)) {
+                console.log("badgeInACellThreshold(4) = " + badgeInACellThreshold(4) + " => " + $(eTd).width());
+                setBadgeSize($(eBdg), 64);
+            } else if ($(eTd).width() < badgeInACellThreshold(3)) {
+                console.log("badgeInACellThreshold(3) = " + badgeInACellThreshold(4) + " => " + $(eTd).width());
+                setBadgeSize($(eBdg), 32);
+            } else {
+                console.log("no badgeInACellThreshold");
+                setBadgeSize($(eBdg), 64);
+            }
+        });
+    }
+    // Helper: responsive table
+    var responsiveTable = function(table) {
+        var tds = table.find("td");
+        console.debug(badgeInACellThreshold(1));
+        tds.each(function(n, eTd) {
+            console.debug("td#" + n + " width=" + $(eTd).width());
+            if ($(eTd).width() < badgeInACellThreshold(4)) {
+                console.log("1");
+            }
+            //responsiveBbadges();
+        });
+    }
     //Window Resize event handler
     function resize(){
-        return;
-        console.log("window.resize()");
+        //console.log("window.resize()");
         //Badge font size calculation
         //bdgs.width("10px");
         //bdgs.height(bdgs.width());
         //bdgContainer
         //bdgs.css("margin", "30px");
-        console.log("resize: body height = " + $("body").height());
-        //
-        bdgs.each(function(n,e){
-            var inner = $(this).find(".inner");
-            var innerDiv = inner.find("div");
-            var img = inner.find("img");
-            var spanTextHeight = inner.innerHeight() - img.outerHeight();
-            var spans = inner.find("span");
-            var height = spanTextHeight / spans.length + "px";
-            innerDiv.css("width", inner.innerWidth());
-            innerDiv.css("height", height);
-            innerDiv.textfill();
-        });
+        //console.log("resize: body height = " + $("body").height());
+        var bdgMinSize = parseInt(bdgs.css("min-width")),
+            bdgMarginLeft = parseInt(bdgs.css("marginLeft")),
+            bdgMarginRight = parseInt(bdgs.css("marginRight"));    
+        var table = $("table");
+        // responsive table
+        responsiveTable(table);
     }
 });

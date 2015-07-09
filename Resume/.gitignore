@@ -1,5 +1,6 @@
 .gitignore
 node_modules
+.dropbox
 
 # Compiled source (source: http://goo.gl/hVcp7b) #
 ##################################################

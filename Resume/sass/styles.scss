@@ -12,12 +12,13 @@
 // borders
 .border-t { border-top: $border-width solid $borderColor; }
 .border-b { border-bottom: $border-width solid $borderColor; }
-.border-tb { border-top: $border-width solid $borderColor;
+.border-tb {
+    border-top: $border-width solid $borderColor;
     border-bottom: $border-width solid $borderColor; }
 // All elements
 * {
     @include box-sizing(border-box);    
-    border: 1px solid white;    
+    //border: 1px solid white;    
 }
 // HTML and BODY
 html { background-color: $pageBackgroundColor; }
@@ -61,8 +62,7 @@ section {
     padding: 1px 10px;
 }
 #heading {
-    background-color: $headerBackgroundColor;
-    @include background-image(linear-gradient(to bottom,
+    @include background(linear-gradient(to bottom,
         lighten($headerBackgroundColor, 20),
         $headerBackgroundColor));
     #info {
@@ -90,18 +90,18 @@ section {
     }
 }
 #objective {
-    @include background-image(linear-gradient(to bottom,
+    @include background(linear-gradient(to bottom,
         $headerBackgroundColor,
         $backgroundColor,
         $c4,$c4,
         $backgroundColor));
 }
 #experience {
-    @include background-image(linear-gradient(to bottom, $headerBackgroundColor, $c4, $c5));
+    @include background(linear-gradient(to bottom, $headerBackgroundColor, $c4, $c5));
     color: $c3;
 }
 #education {
-    @include background-image(linear-gradient(to bottom,
+    @include background(linear-gradient(to bottom,
         $headerBackgroundColor,
         $backgroundColor,
         $c5));
@@ -128,8 +128,9 @@ table {
     border-collapse: collapse;
     td {
         position: relative;
-        margin: 15px;
+        padding-bottom: 2*$badge-margin;
         text-align: center;
+        //border: 1px solid red;
     }
 }
 //ul.badge-container
@@ -140,8 +141,9 @@ table {
     min-height: $badge-size;
     margin: auto;
     padding: 0px;
-    overflow-x: hidden;
-    overflow-y: auto;    
+    //overflow-x: hidden;
+    //overflow-y: auto;
+    //border: 1px solid red;
 }
 //li.badge
 .badge {
@@ -152,19 +154,15 @@ table {
     height: $badge-size;
     min-width: $badge-min-size;
     min-height: $badge-min-size;
-    //margin: 2vmin;
-    //margin: 16px;
-    //margin: $badge-shadow-size * 2;
-    margin: $badge-size / 10;
+    margin: $badge-margin;
     background-color: $pageBackgroundColor;
     color: invert($pageBackgroundColor);
-    text-shadow: inset 0px 0px 2px $textShadowColor;
-    @include text-shadow(1px 1px 3px lighten(invert($pageBackgroundColor), 50), -1px -1px 3px lighten(invert($pageBackgroundColor), 50));
     text-align: center;
     white-space: nowrap;
-    box-shadow: inset 0px 0px $badge-shadow-size $c5, -$badge-shadow-size 0px $badge-shadow-size $c4, $badge-shadow-size 0px $badge-shadow-size $c4;    
+    @include text-shadow(1px 1px 3px lighten(invert($pageBackgroundColor), 50), -1px -1px 3px lighten(invert($pageBackgroundColor), 50));
+    @include box-shadow(inset 0px 0px $badge-shadow-size $c5, -$badge-shadow-size 0px $badge-shadow-size $c4, $badge-shadow-size 0px $badge-shadow-size $c4);
     border-radius: 50%;
-    //overflow: hidden;
+    overflow: hidden;
 }
 .badge .background {
     position: absolute;
@@ -187,23 +185,41 @@ table {
     top: 0;
     bottom: 0;
     right: 0;
+    font-family: $fontSecondary;
     img {
         display: inherit;
         margin: auto;
         width: $badge-img-size;
     }
-    div {
-        span {
-            //display: inline-block;
-            font-family: $fontSecondary;
-        }
-    }
 }
-/*.badge.hover, .badge:hover {
-background-color: lighten($c5, 5);//invert($pageBackgroundColor);//rgba($c1, 0.3);
-box-shadow: inset 0 0 ($badge-size / 5)
-darken($c5, 20),
-0 0 ($badge-size / 5) $badge-shadow-size darken($c5, 20);
-img { @include filter(grayscale(100%)); }
-span { @include filter(invert(100%)); }
-}*/
+.badge:hover {
+    background-color: lighten($c5, 5);//invert($pageBackgroundColor);//rgba($c1, 0.3);
+    box-shadow: inset 0 0 ($badge-size / 5)
+        darken($c5, 20),
+        0 0 ($badge-size / 5) $badge-shadow-size darken($c5, 20);
+    img { @include filter(grayscale(100%)); }
+    span { @include filter(invert(100%)); }
+}
+/*html,
+body,
+#{headings()},
+#heading,
+#objective,
+#experience,
+#education*/
+.print {
+    @include background(white);
+    color: black;
+    @include text-shadow(none);
+    #info hr { background: black; }
+    .border-t, .border-b, .border-tb { border-color: black; }
+    .badge {
+        //width: 64px;
+        //height: 64px;
+        //min-width: 64px;
+        //min-height: 64px;
+        @include box-shadow();
+        //@include filter(grayscale(100%));
+        //.background { display: none }
+    }    
+}
