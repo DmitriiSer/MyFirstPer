@@ -20,16 +20,21 @@
     @include box-sizing(border-box);    
     //border: 1px solid white;    
 }
-// HTML and BODY
-html { background-color: $pageBackgroundColor; }
-body { width: 90%; background-color: transparent; z-index: 0; }
-html, body {
+// HTML
+html {
+    background-color: $pageBackgroundColor;
     margin: auto;
     font-family: $fontPrimary;
     //font-size: 2vmin;//62.5%;
     text-align: justify;
     //background-color: $pageBackgroundColor;
     color: $textColor;
+}
+// bodyContainer
+#bodyContainer {
+    width: 90%;
+    margin: auto;
+    z-index: 0; 
 }
 // canvas
 canvas { 
@@ -56,6 +61,20 @@ canvas {
     margin: 0.5rem;
 }
 #{headings(4,5)} { text-align: left; }
+// change view button
+#changeView {
+    position: fixed;
+    top: 0;
+    right: 0;
+    $changeView_size: 4vw;
+    $changeView_border_width: $changeView_size / 2.5;
+    width: $changeView_size;
+    height: $changeView_size;
+    border-left: $changeView_border_width solid transparent;
+    border-top: $changeView_border_width solid $c3;
+    border-right: $changeView_border_width solid $c1;
+    border-bottom: $changeView_border_width solid transparent;
+}
 // sections
 section {
     font-family: $fontPrimary;
