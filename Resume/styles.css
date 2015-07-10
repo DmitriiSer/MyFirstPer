@@ -267,45 +267,42 @@ table {
     display: inherit;
     margin: auto;
     width: 32px; }
-  /* line 238, sass/styles.scss */
-  .badge .inner div {
-    border: 1px solid black; }
 
-/* line 240, sass/styles.scss */
+/* line 239, sass/styles.scss */
 .badge:hover {
   background: #204353;
   -moz-box-shadow: inset 0 0 12.8px black, 0 0 12.8px 6.4px black;
   -webkit-box-shadow: inset 0 0 12.8px black, 0 0 12.8px 6.4px black;
   box-shadow: inset 0 0 12.8px black, 0 0 12.8px 6.4px black; }
 
-/* line 248, sass/styles.scss */
+/* line 247, sass/styles.scss */
 .print .border-t, .print .border-b, .print .border-tb {
   border-color: black; }
-/* line 249, sass/styles.scss */
+/* line 248, sass/styles.scss */
 .print #heading > #info > hr {
   background: black; }
-/* line 250, sass/styles.scss */
+/* line 249, sass/styles.scss */
 .print html, .print body, .print h1, .print h2, .print h3, .print h4, .print h5, .print h6, .print #heading, .print #objective, .print #experience, .print #education {
   background: white;
   color: black;
   text-shadow: none;
   border-color: black; }
-/* line 256, sass/styles.scss */
+/* line 255, sass/styles.scss */
 .print .badge {
   -moz-box-shadow: 0px 0px 5px #333333;
   -webkit-box-shadow: 0px 0px 5px #333333;
   box-shadow: 0px 0px 5px #333333;
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%); }
-  /* line 259, sass/styles.scss */
+  /* line 258, sass/styles.scss */
   .print .badge .background {
     display: none; }
-  /* line 260, sass/styles.scss */
+  /* line 259, sass/styles.scss */
   .print .badge .inner > div {
     background: transparent; }
-/* line 262, sass/styles.scss */
+/* line 261, sass/styles.scss */
 .print .badge:hover {
   background: transparent; }
-  /* line 264, sass/styles.scss */
+  /* line 263, sass/styles.scss */
   .print .badge:hover .background {
     display: block; }
