@@ -11,17 +11,49 @@ var Helpers = {
     },
     // transform RGB color to HEX value
     rgbToHex: function(r,g,b) { return "#" + r.toString(16) + g.toString(16) + b.toString(16); },
+    // get text width and height depending on font
+    getTextWidth: function(text, font) {
+        // re-use canvas object for better performance
+        var canvas = this.getTextWidth.canvas ||
+            (this.getTextWidth.canvas = document.createElement("canvas"));
+        var context = canvas.getContext("2d");
+        context.font = font;
+        var metrics = context.measureText(text);
+        return metrics.width;
+    },
     // fit text into container
-    fitText: function() {
-        var e = $(this);
-        if (e.width() != undefined && e.width() > 0 &&
-            e.height() != undefined && e.height() > 0) {
-            console.log(e[0].innerText);            
+    fitText: function(obj) {
+        if (obj.width() != undefined && obj.width() > 0 &&
+            obj.height() != undefined && obj.height() > 0) {
+            var text = obj[0].innerText,
+                font = obj.css("font-family").split(/[\s,']+/),
+                fontSize = parseInt(obj.css("font-size")),
+                fontFamily = font[1],
+                fontType = font[3];            
+            var fontFamilyString = fontSize + "px " + fontFamily + ", " + fontType;
+            var textWidth = Helpers.getTextWidth(text, fontFamilyString);            
+            while (obj.width() <= textWidth || obj.height() <= fontSize) {
+                                    console.log(text);
+
+                if (text.includes("HTML")) {
+                    console.log(text);
+                    console.debug(//obj.width() + " " + textWidth + ", " +
+                              obj.height() + " " + fontSize);
+                }
+                
+                fontSize--;
+                fontFamilyString = fontSize + "px " + fontFamily + ", " + fontType;
+                textWidth = Helpers.getTextWidth(text, fontFamilyString);
+            }
+            fontSize -= 2;
+            obj.css("font-size", fontSize);
+            obj.css("padding-bottom", "1px");
         }
     },
     // badge size change
     setBadgeSize: function(bdg, size, speed) {
-        var minSize = 0;
+        console.log(bdg.length);
+        var minSize = 0;        
         try {
             if (bdg.css("min-width") != undefined)
                 minSize = parseInt(bdg.css("min-width"));
@@ -34,13 +66,13 @@ var Helpers = {
             size = minSize; 
         if (speed === undefined)
             speed = "slow";
-        var bdgInner         = bdg.find(".inner"),
-            bdgInnerSize     = size * Math.sin(Math.PI / 4),
-            bdgImg           = bdgInner.find("img"),
-            bdgImgSize       = 0.5 * size,
-            bdgInnerDiv      = bdgInner.find("div"),
-            bdgInnerDivSize  = bdgInnerSize - bdgImgSize,
-            bdgInnerSpan     = bdgInner.find("span");
+        var bdgInner          = bdg.find(".inner"),
+            bdgInnerSize      = size * Math.sin(Math.PI / 4),
+            bdgImg            = bdgInner.find("img"),
+            bdgImgSize        = 0.5 * size,
+            bdgInnerDiv       = bdgInner.find("div"),
+            bdgInnerDivHeight = bdgInnerSize - bdgImgSize,
+            bdgInnerSpan      = bdgInner.find("span");
         bdg.velocity("stop")
             .velocity({
             width: size,
@@ -52,30 +84,25 @@ var Helpers = {
         bdgImg.velocity("stop")
             .velocity({
             width: bdgImgSize,
-            height: bdgImgSize }, speed);
-        bdgInnerDiv.velocity("stop")
-            .velocity({
-            width: bdgInnerSize,
-            height: bdgInnerDivSize }, {
+            height: bdgImgSize 
+        }, {
             duration: speed,
             progress: function() {
-                //bdgInnerSpan.position().top = "100px";
-                //bdgInnerSpan.position().top = "100px";
-                //bdgInnerDiv.fitText();
+                bdgInnerDiv.outerHeight(bdgInnerDivHeight);                
+            },            
+            complete: function() {
+                Helpers.fitText(bdgInnerDiv);
             }
         });
     },
     // badge in table cell threshold
     badgeInACellThreshold: function(bdgCount) {
         var bdgs = $(".badge");
-        var bdgMinSize = parseInt(bdgs.css("min-width")),
+        var bdgSize = bdgs.width(),
+            bdgMinSize = parseInt(bdgs.css("min-width")),
             bdgMarginLeft = parseInt(bdgs.css("marginLeft")),
             bdgMarginRight = parseInt(bdgs.css("marginRight"));
-        var result = bdgCount * (bdgMinSize + bdgMarginLeft) + bdgMarginRight;
-        console.debug("bdgCount = " + bdgCount + ", bdgMinSize = " + bdgMinSize +
-                      ", bdgMarginLeft = " + bdgMarginLeft +
-                      ", bdgMarginRight = " + bdgMarginRight + 
-                      ", result = " + result);
+        var result = bdgCount * (bdgSize + bdgMarginLeft) + bdgMarginRight;
         return result;
     },
     // responsive badges
@@ -101,10 +128,15 @@ var Helpers = {
     // responsive table
     responsiveTable: function(table) {
         var tds = table.find("td");
+        //console.debug("td's width=" + tds.width());
         tds.each(function(n, eTd) {
+            var bdgs = $(eTd).find(".badge");
             //console.debug("td#" + n + " width=" + $(eTd).width());
-            if ($(eTd).width() < Helpers.badgeInACellThreshold(4)) {
-                //console.log("1");
+            bdgs.each(function(n, eBdg) {
+                Helpers.setBadgeSize($(eBdg), 32);
+            });            
+            if ($(eTd).width() < Helpers.badgeInACellThreshold(5)) {
+
             }
             //responsiveBbadges();
         });
@@ -125,65 +157,63 @@ var EventHandlers = {
         //console.log("resize: body height = " + $("body").height());
         var table = $("table");
         // responsive table
-        Helpers.responsiveTable(table);    
+        Helpers.responsiveTable(table);
+        Helpers.setBadgeSize($(".badge"), 64);
     },
     // changeView button click event handler
     changeViewClickEventHandler: function() {
-        var elems = ["html", "body", "hr"];//, "div", "section"];
-        for(var i = 0; i < elems.length; i++) {
-            if ($(elems[i]).hasClass("print"))
-                $(elems[i]).removeClass("print");
-            else
-                $(elems[i]).addClass("print");
-        }
-        /*if ($("*").hasClass("print"))
-            $("*").removeClass("print");
+        if ($("html").hasClass("print"))
+            $("html").removeClass("print");
         else
-            $("*").addClass("print");*/
+            $("html").addClass("print");
     },
     // badge mouse enter event handler
     badgeMouseEnter: function(e) {
-        var background = $(this).find(".background"),
-            img = $(this).find("img"),
-            text = $(this).find("span").parent();
-        //$(this).css("position", "absolute");
-        //$(this).velocity({ left : "90"}, 5000);
-        if (!img.hasClass("velocity-animating")) {
-            //img.css("margin", "0");
-            //img.css("position", "absolute");
-            background.velocity({ blur: 0 }, "fast");
-            img.velocity({ width: "100%", height : "100%", opacity: 0 }, "fast");
-            if (img.length != 0) {
-                text.velocity({ opacity: 0 }, "fast");
+        var animationDuration = "fast";
+        var bdgBackground = $(this).find(".background"),
+            bdgInner = $(this).find(".inner"),
+            bdgImg = $(this).find("img"),
+            bdgInnerDiv = $(this).find(".inner div");
+        bdgInnerDiv.css("border", "1px solid red");
+        if (!bdgImg.hasClass("velocity-animating")) {
+            bdgBackground.velocity({ blur: 0 }, "fast");
+            bdgImg.velocity({ width: "100%", height : "100%", opacity: 0 }, animationDuration);
+            if (bdgImg.length != 0) {
+                // if there is a badge picture
+                bdgInnerDiv.velocity({ opacity: 0 }, animationDuration);
             } else {
-                text.velocity({
-                    width: $(this).width(),
-                    height: $(this).height()
-                }, "fast");
+                // else there is no a badge picture
+                bdgInnerDiv.velocity({
+                    width: bdgInner.width(),
+                    height: bdgInner.height()
+                }, animationDuration);
             }
         } else {
-            img.velocity("stop");
-            text.velocity("stop");
+            bdgImg.velocity("stop");
+            bdgInnerDiv.velocity("stop");
         }
     },
     badgeMouseLeave: function(e) {
-        //console.log("bdgs.mouseleave");
-        var imgSize = Math.sin(Math.PI / 4) * 100;
-        var background = $(this).find(".background"),
-            img = $(this).find("img"),
-            text = $(this).find("span").parent();
-        background.velocity("stop");
-        img.velocity("stop");
-        text.velocity("stop");
-        background.velocity({ blur: "8px" }, "fast");
-        img.velocity({ width: imgSize + "%", height : imgSize + "%", opacity: 1 }, "fast");
-        if (img.length != 0) {
-            text.velocity({ opacity: 1 }, "fast");
+        var animationDuration = "fast";
+        var bdgImgSize = Math.sin(Math.PI / 4) * 100;
+        var bdgBackground = $(this).find(".background"),
+            bdgInner = $(this).find(".inner"),
+            bdgImg = $(this).find("img"),
+            bdgInnerDiv = $(this).find(".inner div");
+        bdgBackground.velocity("stop");
+        bdgImg.velocity("stop");
+        bdgInnerDiv.velocity("stop");
+        bdgBackground.velocity({ blur: "8px" }, animationDuration);
+        bdgImg.velocity({ width: bdgImgSize + "%", height : bdgImgSize + "%", opacity: 1 }, animationDuration);
+        if (bdgImg.length != 0) {
+            // if there is a badge picture
+            bdgInnerDiv.velocity({ opacity: 1 }, animationDuration);
         } else {
-            text.velocity({
-                width: "100%",
-                height: "100%"
-            }, "fast");
+            // else there is no a badge picture
+            bdgInnerDiv.velocity({
+                width: bdgInner.width(),
+                height: "20px"
+            }, animationDuration);
         }
     }
 }

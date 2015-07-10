@@ -1,11 +1,14 @@
 @import "imports";
 
-// helpers
 // centrification
-.center-h { position: absolute; left: 50%;
-    transform: translateX(-50%); }
-.center-v { position: absolute; left: 0; top: 50%;
-    transform: translateY(-50%); }
+.center-h {
+    position: absolute; left: 50%;
+    transform: translateX(-50%);
+}
+.center-v {
+    position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%);
+}
 .center { position: absolute; left: 50%; top: 50%; 
     transform: translateX(-50%) translateY(-50%);
 }
@@ -18,16 +21,15 @@
 // All elements
 * {
     @include box-sizing(border-box);    
-    //border: 1px solid white;    
+    //border: 1px double white;
 }
-// HTML
-html {
-    background-color: $pageBackgroundColor;
+// html and body
+html, body {
+    @include background($pageBackgroundColor);
     margin: auto;
     font-family: $fontPrimary;
     //font-size: 2vmin;//62.5%;
     text-align: justify;
-    //background-color: $pageBackgroundColor;
     color: $textColor;
 }
 // bodyContainer
@@ -56,23 +58,49 @@ canvas {
     text-align: center;
     @include text-shadow(1px 1px 0px rgba($textShadowColor, 0.4), -1px -1px 1px rgba(black,0.6) );
 }
-#{headings(2,5)} {
+#{headings(2,6)} {
     letter-spacing: 2px;
     margin: 0.5rem;
 }
-#{headings(4,5)} { text-align: left; }
+#{headings(4,6)} { text-align: left; }
+h4 {
+    display: inline-block;
+    border: $border-width solid $borderColor;
+    border-top-color: transparent;
+    margin-top: -$border-width;
+    padding: 0.3rem; 
+    padding-bottom: 0.3rem;     
+}
+h6 {
+    font-family: $fontPrimary;
+    font-size: small;
+    font-style: italic;
+    letter-spacing: 0.013em;
+}
 // change view button
+$changeView_size: 4vw;
 #changeView {
     position: fixed;
     top: 0;
     right: 0;
-    $changeView_size: 4vw;
+    $changeView_size: 3vw;
     $changeView_border_width: $changeView_size / 2.5;
     width: $changeView_size;
     height: $changeView_size;
     border-left: $changeView_border_width solid transparent;
     border-top: $changeView_border_width solid $c3;
-    border-right: $changeView_border_width solid $c1;
+    border-right: $changeView_border_width solid $c4;
+    border-bottom: $changeView_border_width solid transparent;
+
+}
+#changeView:hover {
+    $changeView_size: 5vw;
+    $changeView_border_width: $changeView_size / 2.5;
+    width: $changeView_size;
+    height: $changeView_size;
+    border-left: $changeView_border_width solid transparent;
+    border-top: $changeView_border_width solid $c3;
+    border-right: $changeView_border_width solid $c4;
     border-bottom: $changeView_border_width solid transparent;
 }
 // sections
@@ -95,13 +123,12 @@ section {
             li {
                 display: inline-block;
                 margin-left: -2px; margin-right: -2px;
-                //text-shadow: 0px 1px 1px $textShadowColor;
                 i { margin-left: 0.5rem; margin-right: 0.5rem; }
             }
         }
         hr {
             border-width: 0;
-            background: $borderColor;
+            @include background($borderColor);
             height: $border-width * 2;
             margin: 0px auto $border-width;
             font-size: 0;
@@ -143,13 +170,11 @@ ul.normal {
 }
 //table
 table {
-    position: relative;
+    width: 100%;
     border-collapse: collapse;
     td {
-        position: relative;
-        padding-bottom: 2*$badge-margin;
+        //padding-bottom: 2*$badge-margin;
         text-align: center;
-        //border: 1px solid red;
     }
 }
 //ul.badge-container
@@ -174,7 +199,7 @@ table {
     min-width: $badge-min-size;
     min-height: $badge-min-size;
     margin: $badge-margin;
-    background-color: $pageBackgroundColor;
+    @include background($pageBackgroundColor);
     color: invert($pageBackgroundColor);
     text-align: center;
     white-space: nowrap;
@@ -210,35 +235,32 @@ table {
         margin: auto;
         width: $badge-img-size;
     }
+    div { border: 1px solid black; }
 }
 .badge:hover {
-    background-color: lighten($c5, 5);//invert($pageBackgroundColor);//rgba($c1, 0.3);
-    box-shadow: inset 0 0 ($badge-size / 5)
-        darken($c5, 20),
-        0 0 ($badge-size / 5) $badge-shadow-size darken($c5, 20);
-    img { @include filter(grayscale(100%)); }
-    span { @include filter(invert(100%)); }
+    @include background(lighten($c5, 5));
+    @include box-shadow(
+        inset 0 0 ($badge-size / 5) darken($c5, 20),
+        0 0 ($badge-size / 5) $badge-shadow-size darken($c5, 20));
 }
-/*html,
-body,
-#{headings()},
-#heading,
-#objective,
-#experience,
-#education*/
+//style to change view of the page to printable view
 .print {
-    @include background(white);
-    color: black;
-    @include text-shadow(none);
-    #info hr { background: black; }
     .border-t, .border-b, .border-tb { border-color: black; }
+    #heading > #info > hr { @include background(black); }
+    html, body, #{headings()}, #heading, #objective, #experience, #education {
+        @include background(white);
+        color: black;
+        @include text-shadow(none);
+        border-color: black;
+    }
     .badge {
-        //width: 64px;
-        //height: 64px;
-        //min-width: 64px;
-        //min-height: 64px;
         @include box-shadow();
-        //@include filter(grayscale(100%));
-        //.background { display: none }
-    }    
+        @include filter(grayscale(100%));
+        .background { display: none }
+        .inner > div { @include background(transparent); }
+    }
+    .badge:hover {
+        @include background(transparent);
+        .background { display: block }
+    }
 }
