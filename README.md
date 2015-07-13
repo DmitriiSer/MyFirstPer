@@ -1,11 +1,12 @@
 #### Web projects  
----  
 *This repository contains my own web projects:*  
+***
 1. **[AdvancedCarousel](https://github.com/DmitriiSer/WebProjects/tree/master/AdvancedCarousel) (HTML5 + CSS3 + JavaScript/jQuery/Velocity.js)**  
  (Representation of an image carousel)  
  * **TODO:**  
    1. *Make transitions (rotations, translations) for navigation elements with [Velocity.js](http://VelocityJS.org)*  
    2. *Make viewport contain several images*  
+***
 2. **[Resume](https://github.com/DmitriiSer/WebProjects/tree/master/Resume) (HTML5 + CSS3/SASS/Grunt/Compass + JavaScript/jQuery/Velocity.js)**  
  (My own animated resume)  
  * **TODO:**  
