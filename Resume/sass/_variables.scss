@@ -26,7 +26,7 @@ $border-width: 2px;
 //badge variables
 $badge-min-size: 32px;
 $badge-size: 64px;
-$badge-shadow-size: $badge-size / 10;
+$badge-shadow-size: $badge-size / 20;
 $badge-margin: $badge-shadow-size * 1.4;
 //$badge-margin: $badge-size / 10;
 $badge-inner-container-size: $badge-size * sin(pi() / 4);

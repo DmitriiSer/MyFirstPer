@@ -1,5 +1,6 @@
 @import url("http://fonts.googleapis.com/css?family=Droid+Serif:400,700|Arvo|Slabo+27px");
 @import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+@import url("http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css");
 /* line 4, sass/styles.scss */
 .center-h {
   position: absolute;
@@ -65,24 +66,31 @@ canvas {
   zIndex: 0; }
 
 /* line 53, sass/styles.scss */
-h1, h2, h3, h4, h5, h6 {
-  margin: 2rem 0.5rem;
+h1, h2, h3, h4, h5, h6, h7 {
+  margin: 0.5rem;
   font-family: "Droid Serif", serif;
   font-weight: 700;
   letter-spacing: 0.4rem;
-  text-align: center;
-  text-shadow: 1px 1px 0px rgba(116, 148, 131, 0.4), -1px -1px 1px rgba(0, 0, 0, 0.6); }
+  text-shadow: 1px 1px 0px rgba(116, 148, 131, 0.4), -1px -1px 1px rgba(0, 0, 0, 0.6);
+  word-wrap: break-word; }
 
 /* line 61, sass/styles.scss */
-h2, h3, h4, h5, h6 {
-  letter-spacing: 2px;
-  margin: 0.5rem; }
+h1 {
+  margin: 2rem 0.5rem; }
 
-/* line 65, sass/styles.scss */
+/* line 62, sass/styles.scss */
+h2, h3, h4, h5, h6 {
+  letter-spacing: 2px; }
+
+/* line 63, sass/styles.scss */
+h1, h2, h3 {
+  text-align: center; }
+
+/* line 64, sass/styles.scss */
 h4, h5, h6 {
   text-align: left; }
 
-/* line 66, sass/styles.scss */
+/* line 65, sass/styles.scss */
 h4 {
   display: inline-block;
   border: 2px solid #749483;
@@ -91,66 +99,65 @@ h4 {
   padding: 0.3rem;
   padding-bottom: 0.3rem; }
 
-/* line 74, sass/styles.scss */
+/* line 73, sass/styles.scss */
 h6 {
-  font-family: "Arvo", serif;
+  font-family: "Slabo 27px", serif;
   font-size: small;
-  font-style: italic;
-  letter-spacing: 0.013em; }
+  letter-spacing: 0.13rem; }
 
-/* line 82, sass/styles.scss */
+/* line 79, sass/styles.scss */
 #changeView {
   position: fixed;
   top: 0;
   right: 0;
-  width: 3vw;
-  height: 3vw;
-  border-left: 1.2vw solid transparent;
-  border-top: 1.2vw solid #91AA9D;
-  border-right: 1.2vw solid #3E606F;
-  border-bottom: 1.2vw solid transparent; }
+  width: 20px;
+  height: 20px;
+  border-left: 8px solid transparent;
+  border-top: 8px solid #91AA9D;
+  border-right: 8px solid #3E606F;
+  border-bottom: 8px solid transparent; }
 
-/* line 96, sass/styles.scss */
+/* line 93, sass/styles.scss */
 #changeView:hover {
-  width: 5vw;
-  height: 5vw;
-  border-left: 2vw solid transparent;
-  border-top: 2vw solid #91AA9D;
-  border-right: 2vw solid #3E606F;
-  border-bottom: 2vw solid transparent; }
+  width: 25px;
+  height: 25px;
+  border-left: 10px solid transparent;
+  border-top: 10px solid #91AA9D;
+  border-right: 10px solid #3E606F;
+  border-bottom: 10px solid transparent; }
 
-/* line 107, sass/styles.scss */
+/* line 104, sass/styles.scss */
 section {
   font-family: "Arvo", serif;
   padding: 1px 10px; }
 
-/* line 111, sass/styles.scss */
+/* line 108, sass/styles.scss */
 #heading {
   background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzIwNDM1MyIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzA0MDgwYSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #204353), color-stop(100%, #04080a));
   background: -moz-linear-gradient(top, #204353, #04080a);
   background: -webkit-linear-gradient(top, #204353, #04080a);
   background: linear-gradient(to bottom, #204353, #04080a); }
-  /* line 115, sass/styles.scss */
+  /* line 112, sass/styles.scss */
   #heading #info {
     margin: auto;
     text-align: center;
     overflow: hidden; }
-    /* line 119, sass/styles.scss */
+    /* line 116, sass/styles.scss */
     #heading #info ul.horizontal {
       margin: auto;
       padding: 0px;
       font-family: "Slabo 27px", serif; }
-      /* line 123, sass/styles.scss */
+      /* line 120, sass/styles.scss */
       #heading #info ul.horizontal li {
         display: inline-block;
         margin-left: -2px;
         margin-right: -2px; }
-        /* line 126, sass/styles.scss */
+        /* line 123, sass/styles.scss */
         #heading #info ul.horizontal li i {
           margin-left: 0.5rem;
           margin-right: 0.5rem; }
-    /* line 129, sass/styles.scss */
+    /* line 126, sass/styles.scss */
     #heading #info hr {
       border-width: 0;
       background: #749483;
@@ -158,7 +165,7 @@ section {
       margin: 0px auto 2px;
       font-size: 0; }
 
-/* line 138, sass/styles.scss */
+/* line 135, sass/styles.scss */
 #objective {
   background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzA0MDgwYSIvPjxzdG9wIG9mZnNldD0iMjUlIiBzdG9wLWNvbG9yPSIjMTkzNDQxIi8+PHN0b3Agb2Zmc2V0PSI1MCUiIHN0b3AtY29sb3I9IiMzZTYwNmYiLz48c3RvcCBvZmZzZXQ9Ijc1JSIgc3RvcC1jb2xvcj0iIzNlNjA2ZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzE5MzQ0MSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #04080a), color-stop(25%, #193441), color-stop(50%, #3e606f), color-stop(75%, #3e606f), color-stop(100%, #193441));
@@ -166,7 +173,7 @@ section {
   background: -webkit-linear-gradient(top, #04080a, #193441, #3e606f, #3e606f, #193441);
   background: linear-gradient(to bottom, #04080a, #193441, #3e606f, #3e606f, #193441); }
 
-/* line 145, sass/styles.scss */
+/* line 142, sass/styles.scss */
 #experience {
   background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzA0MDgwYSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjM2U2MDZmIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMTkzNDQxIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #04080a), color-stop(50%, #3e606f), color-stop(100%, #193441));
@@ -175,7 +182,7 @@ section {
   background: linear-gradient(to bottom, #04080a, #3e606f, #193441);
   color: #91AA9D; }
 
-/* line 149, sass/styles.scss */
+/* line 146, sass/styles.scss */
 #education {
   background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzA0MDgwYSIvPjxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjMTkzNDQxIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMTkzNDQxIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #04080a), color-stop(50%, #193441), color-stop(100%, #193441));
@@ -183,33 +190,33 @@ section {
   background: -webkit-linear-gradient(top, #04080a, #193441, #193441);
   background: linear-gradient(to bottom, #04080a, #193441, #193441); }
 
-/* line 156, sass/styles.scss */
+/* line 153, sass/styles.scss */
 p {
   margin: 0.5rem; }
 
-/* line 158, sass/styles.scss */
+/* line 155, sass/styles.scss */
 a:link, a:visited {
   text-decoration: none;
   color: inherit;
   cursor: pointer; }
 
-/* line 164, sass/styles.scss */
-ul.normal {
+/* line 161, sass/styles.scss */
+ul.normal, ol.normal {
   margin: 0.5rem; }
-  /* line 166, sass/styles.scss */
-  ul.normal li {
+  /* line 163, sass/styles.scss */
+  ul.normal li, ol.normal li {
     margin-left: -0.5rem;
     margin-right: 0.5rem; }
 
-/* line 172, sass/styles.scss */
+/* line 169, sass/styles.scss */
 table {
   width: 100%;
   border-collapse: collapse; }
-  /* line 175, sass/styles.scss */
+  /* line 172, sass/styles.scss */
   table td {
     text-align: center; }
 
-/* line 181, sass/styles.scss */
+/* line 179, sass/styles.scss */
 .badge-container {
   display: table;
   max-height: 50vh;
@@ -217,7 +224,7 @@ table {
   margin: auto;
   padding: 0px; }
 
-/* line 193, sass/styles.scss */
+/* line 188, sass/styles.scss */
 .badge {
   display: inline-block;
   position: relative;
@@ -225,19 +232,19 @@ table {
   height: 64px;
   min-width: 32px;
   min-height: 32px;
-  margin: 8.96px;
+  margin: 4.48px;
   background: #D1DBBD;
   color: #2e2442;
   text-align: center;
   white-space: nowrap;
   text-shadow: 1px 1px 3px #ab9cc9, -1px -1px 3px #ab9cc9;
-  -moz-box-shadow: inset 0px 0px 6.4px #193441, -6.4px 0px 6.4px #3E606F, 6.4px 0px 6.4px #3E606F;
-  -webkit-box-shadow: inset 0px 0px 6.4px #193441, -6.4px 0px 6.4px #3E606F, 6.4px 0px 6.4px #3E606F;
-  box-shadow: inset 0px 0px 6.4px #193441, -6.4px 0px 6.4px #3E606F, 6.4px 0px 6.4px #3E606F;
+  -moz-box-shadow: inset 0px 0px 3.2px #193441, -3.2px 0px 3.2px #3E606F, 3.2px 0px 3.2px #3E606F;
+  -webkit-box-shadow: inset 0px 0px 3.2px #193441, -3.2px 0px 3.2px #3E606F, 3.2px 0px 3.2px #3E606F;
+  box-shadow: inset 0px 0px 3.2px #193441, -3.2px 0px 3.2px #3E606F, 3.2px 0px 3.2px #3E606F;
   border-radius: 50%;
   overflow: hidden; }
 
-/* line 211, sass/styles.scss */
+/* line 206, sass/styles.scss */
 .badge .background {
   position: absolute;
   left: 0;
@@ -250,7 +257,7 @@ table {
   -webkit-filter: blur(8px);
   filter: blur(8px); }
 
-/* line 222, sass/styles.scss */
+/* line 217, sass/styles.scss */
 .badge .inner {
   display: block;
   position: absolute;
@@ -262,47 +269,47 @@ table {
   bottom: 0;
   right: 0;
   font-family: "Slabo 27px", serif; }
-  /* line 233, sass/styles.scss */
+  /* line 228, sass/styles.scss */
   .badge .inner img {
     display: inherit;
     margin: auto;
     width: 32px; }
 
-/* line 239, sass/styles.scss */
+/* line 235, sass/styles.scss */
 .badge:hover {
   background: #204353;
-  -moz-box-shadow: inset 0 0 12.8px black, 0 0 12.8px 6.4px black;
-  -webkit-box-shadow: inset 0 0 12.8px black, 0 0 12.8px 6.4px black;
-  box-shadow: inset 0 0 12.8px black, 0 0 12.8px 6.4px black; }
+  -moz-box-shadow: inset 0 0 12.8px black, 0 0 12.8px 3.2px black;
+  -webkit-box-shadow: inset 0 0 12.8px black, 0 0 12.8px 3.2px black;
+  box-shadow: inset 0 0 12.8px black, 0 0 12.8px 3.2px black; }
 
-/* line 247, sass/styles.scss */
+/* line 243, sass/styles.scss */
 .print .border-t, .print .border-b, .print .border-tb {
   border-color: black; }
-/* line 248, sass/styles.scss */
+/* line 244, sass/styles.scss */
 .print #heading > #info > hr {
   background: black; }
-/* line 249, sass/styles.scss */
+/* line 245, sass/styles.scss */
 .print html, .print body, .print h1, .print h2, .print h3, .print h4, .print h5, .print h6, .print #heading, .print #objective, .print #experience, .print #education {
   background: white;
   color: black;
   text-shadow: none;
   border-color: black; }
-/* line 255, sass/styles.scss */
+/* line 251, sass/styles.scss */
 .print .badge {
   -moz-box-shadow: 0px 0px 5px #333333;
   -webkit-box-shadow: 0px 0px 5px #333333;
   box-shadow: 0px 0px 5px #333333;
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%); }
-  /* line 258, sass/styles.scss */
+  /* line 254, sass/styles.scss */
   .print .badge .background {
     display: none; }
-  /* line 259, sass/styles.scss */
+  /* line 255, sass/styles.scss */
   .print .badge .inner > div {
     background: transparent; }
-/* line 261, sass/styles.scss */
+/* line 257, sass/styles.scss */
 .print .badge:hover {
   background: transparent; }
-  /* line 263, sass/styles.scss */
+  /* line 259, sass/styles.scss */
   .print .badge:hover .background {
     display: block; }
