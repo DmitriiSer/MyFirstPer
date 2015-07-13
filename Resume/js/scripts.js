@@ -22,7 +22,15 @@ var Helpers = {
         return metrics.width;
     },
     // fit text into container
-    fitText: function(obj) {
+    fitText: function(obj, params) {
+        // set default params
+        if (params === undefined)
+            params = {};
+        if (params.minFontSize === undefined)
+            params.minFontSize = 4;
+        if (params.hideIfLessThanMinFontSize === undefined) {
+            params.hideIfLessThanMinFontSize = true;
+        }
         if (obj.width() != undefined && obj.width() > 0 &&
             obj.height() != undefined && obj.height() > 0) {
             var text = obj[0].innerText,
@@ -36,6 +44,12 @@ var Helpers = {
                 fontSize--;
                 fontFamilyString = fontSize + "px " + fontFamily + ", " + fontType;
                 textWidth = Helpers.getTextWidth(text, fontFamilyString);
+            }
+            // if text is too small
+            if (fontSize < params.minFontSize && params.hideIfLessThanMinFontSize) {
+                obj.hide();
+            } else {
+                obj.show();
             }
             obj.css("font-size", fontSize);
             obj.css("padding-bottom", "1px");
@@ -89,31 +103,51 @@ var Helpers = {
     // badge in table cell threshold
     badgeInACellThreshold: function(bdgCount) {
         var bdgs = $(".badge");
-        var bdgSize = bdgs.width(),
-            bdgMinSize = parseInt(bdgs.css("min-width")),
+        var bdgMinSize = parseInt(bdgs.css("min-width")),
             bdgMarginLeft = parseInt(bdgs.css("marginLeft")),
             bdgMarginRight = parseInt(bdgs.css("marginRight"));
-        var result = bdgCount * (bdgSize + bdgMarginLeft) + bdgMarginRight;
+        var result = bdgCount * (bdgMinSize + bdgMarginLeft) + bdgMarginRight;
         return result;
     },
     // responsive badges
-    responsiveBbadges: function() {        
-        var bdgs = $(eTd).find(".badge");
+    responsiveBadges: function(obj) {        
+        var bdgs = obj.find(".badge");
         bdgs.each(function(n, eBdg) {
+            /*
+            console.clear();
             console.log(
-                badgeInACellThreshold(4) + " " + $(eTd).width() + " " +
-                badgeInACellThreshold(3) + " " + $(eTd).width()
+                "6: " + Helpers.badgeInACellThreshold(6) + ",\r\n" +
+                "5: " + Helpers.badgeInACellThreshold(5) + ",\r\n" +
+                "4: " + Helpers.badgeInACellThreshold(4) + ",\r\n" +
+                "3: " + Helpers.badgeInACellThreshold(3) + "\r\n" +
+                "1: " + Helpers.badgeInACellThreshold(1) + "\r\n" +
+                "obj.width() = " + obj.width()
             );
-            if ($(eTd).width() < badgeInACellThreshold(6)) {
-                console.log("badgeInACellThreshold(4) = " + badgeInACellThreshold(4) + " => " + $(eTd).width());
-                setBadgeSize($(eBdg), 64);
-            } else if ($(eTd).width() < badgeInACellThreshold(3)) {
-                console.log("badgeInACellThreshold(3) = " + badgeInACellThreshold(4) + " => " + $(eTd).width());
-                setBadgeSize($(eBdg), 32);
+            */
+            //Helpers.setBadgeSize($(eBdg), 96);
+            /*
+            if (obj.width() > Helpers.badgeInACellThreshold(6)) {
             } else {
-                console.log("no badgeInACellThreshold");
-                setBadgeSize($(eBdg), 64);
+                for (var threshold = 6; threshold > 0; threshold--) {
+                    if (Helpers.badgeInACellThreshold(threshold - 1) < obj.width() &&
+                        obj.width() < Helpers.badgeInACellThreshold(threshold)) {
+                        console.log("[" + (threshold-1) + "] < " +
+                                    obj.width() + " < [" + threshold + "]" +
+                                    ", size = " + Math.pow(2, threshold));
+                        Helpers.setBadgeSize($(eBdg), Math.pow(2, threshold + 1));
+                        break;
+                    } 
+                }
             }
+            */
+            /*
+            else if (obj.width() < Helpers.badgeInACellThreshold(3)) {
+                //console.log("badgeInACellThreshold(3) = " + Helpers.badgeInACellThreshold(4) + " => " + $(eTd).width());
+                Helpers.setBadgeSize($(eBdg), 32);
+            } else {
+                //console.log("no badgeInACellThreshold");
+                Helpers.setBadgeSize($(eBdg), 128);
+            }*/
         });
     },
     // responsive table
@@ -123,13 +157,15 @@ var Helpers = {
         tds.each(function(n, eTd) {
             var bdgs = $(eTd).find(".badge");
             //console.debug("td#" + n + " width=" + $(eTd).width());
+            Helpers.responsiveBadges($(eTd));
+            /*
             bdgs.each(function(n, eBdg) {
-                Helpers.setBadgeSize($(eBdg), 64);
-            });            
+                Helpers.setBadgeSize($(eBdg), 128, 0);
+            });
+            */           
             if ($(eTd).width() < Helpers.badgeInACellThreshold(5)) {
 
             }
-            //responsiveBbadges();
         });
     }
 }
@@ -153,10 +189,17 @@ var EventHandlers = {
     },
     // changeView button click event handler
     changeViewClickEventHandler: function() {
-        if ($("html").hasClass("print"))
+        //$("#changeView").tooltip("disable");
+        if ($("html").hasClass("print")) {
             $("html").removeClass("print");
-        else
+            $("#changeView").attr("title", "Go to printable page view");
+        } else {
             $("html").addClass("print");
+            $("#changeView").attr("title", "Go to animated page view");            
+        }
+        $(document).tooltip({
+            content: function() { return $(this).attr('title'); }
+        });
     },
     // badge mouse enter event handler
     badgeMouseEnter: function(e) {
@@ -165,9 +208,11 @@ var EventHandlers = {
             bdgInner = $(this).find(".inner"),
             bdgImg = $(this).find("img"),
             bdgInnerDiv = $(this).find(".inner div");
-        bdgInnerDiv.css("border", "1px solid red");
-        if (!bdgImg.hasClass("velocity-animating")) {
-            bdgBackground.velocity({ blur: 0 }, "fast");
+        // animate only if there is no animation in progress
+        if (!bdgBackground.hasClass("velocity-animating") &&
+            !bdgImg.hasClass("velocity-animating") &&
+            !bdgInnerDiv.hasClass("velocity-animating")) {
+            bdgBackground.velocity({ blur: 0 }, animationDuration);
             bdgImg.velocity({ width: "100%", height : "100%", opacity: 0 }, animationDuration);
             if (bdgImg.length != 0) {
                 // if there is a badge picture
@@ -184,6 +229,7 @@ var EventHandlers = {
             bdgInnerDiv.velocity("stop");
         }
     },
+    // badge mouse leave event handler
     badgeMouseLeave: function(e) {
         var animationDuration = "fast";
         var bdgImgSize = Math.sin(Math.PI / 4) * 100;
@@ -437,5 +483,5 @@ $(function() {
     $(".badge").on("mouseenter", EventHandlers.badgeMouseEnter);// Badge mouse enter event
     $(".badge").on("mouseleave", EventHandlers.badgeMouseLeave);// Badge mouse leave event
     // click changeView button
-    //$("#changeView").click();
+    $("#changeView").click();
 });
