@@ -1,10 +1,4 @@
 #### Web projects
----
-This repository contains my own web projects		
-1) HTML5 + CSS3 + JavaScript / jQuery		
-[AdvancedCarousel](https://github.com/DmitriiSer/WebProjects/tree/master/AdvancedCarousel)
-=======
-#### Web projects
 ---  
 *This repository contains my own web projects:*  
 **1) HTML5 + CSS3 + JavaScript / jQuery**
@@ -20,10 +14,10 @@ This repository contains my own web projects
  * **TODO:**  
    *1) Improve intro animation with HTML5 Canvas*  
    *2) Fix specialty badges*  
+ ***
 
-* Chrome Extensions
-  * [Foodnetwork Recipe to Cozi Meals](https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals)  
- (Chrome/Opera extension that allows to transfer the whole recipe from Foodnetwork recipe page to Cozi Meals recipe)
+* [Foodnetwork Recipe to Cozi Meals (Google chrome/Opera Extension)](https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals)  
+ (Chrome/Opera extension that allows to transfer the whole recipe from Foodnetwork recipe page to Cozi Meals recipe by pressing a button in popup window of the extension)
  * **TODO:**  
    *1) Show warning if recipe is already exists*  
    *2) Create extension icon*  
