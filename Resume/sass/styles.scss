@@ -81,25 +81,47 @@ small > i { word-wrap: break-word; }
     position: fixed;
     top: 0;
     right: 0;
+    $changeView_border_width: 20px / 2.5;
+    width: 20px;
+    height: 20px;
+    border-left: $changeView_border_width solid transparent;
+    border-top: $changeView_border_width solid $c3;
+    border-right: $changeView_border_width solid $c4;
+    border-bottom: $changeView_border_width solid transparent;
+}
+#changeView:hover {
+    $changeView_border_width: 25px / 2.5;
+    width: 25px;
+    height: 25px;
+    border-left: $changeView_border_width solid transparent;
+    border-top: $changeView_border_width solid $c3;
+    border-right: $changeView_border_width solid $c4;
+    border-bottom: $changeView_border_width solid transparent;
+}
+#saveWithStyles {
+    position: fixed;
+    top: 20px;
+    right: 0;
     $changeView_size: 20px;
     $changeView_border_width: $changeView_size / 2.5;
     width: $changeView_size;
     height: $changeView_size;
-    border-left: $changeView_border_width solid transparent;
+    border-left: $changeView_border_width solid $c3;
     border-top: $changeView_border_width solid $c3;
     border-right: $changeView_border_width solid $c4;
-    border-bottom: $changeView_border_width solid transparent;
-
+    border-bottom: $changeView_border_width solid $c4;
 }
-#changeView:hover {
-    $changeView_size: 25px;
-    $changeView_border_width: $changeView_size / 2.5;
-    width: $changeView_size;
-    height: $changeView_size;
-    border-left: $changeView_border_width solid transparent;
+#saveWithStyles:hover {
+    position: fixed;
+    top: 20px;
+    right: 0;
+    $changeView_border_width: 25px / 2.5;
+    width: 25px;
+    height: 25px;
+    border-left: $changeView_border_width solid $c3;
     border-top: $changeView_border_width solid $c3;
     border-right: $changeView_border_width solid $c4;
-    border-bottom: $changeView_border_width solid transparent;
+    border-bottom: $changeView_border_width solid $c4;
 }
 // sections
 section {
