@@ -13,7 +13,7 @@
         <script src="js/scripts.js"></script>
     </head>
     <body>
-        <div id="changeView" title="Go to printable page view"></div>
+        <div id="changeView" class="no-print" title="Go to printable page view"></div>
         <div id="bodyContainer">
             <section id="heading">
                 <h1>Dmitrii Serikov</h1>
@@ -37,7 +37,7 @@
                 </div>
                 <table>
                     <tr>
-                        <td rowspan="1">
+                        <td>
                             Languages:
                             <ul class="badge-container">
                                 <li class="badge">
@@ -87,8 +87,6 @@
                                 </li> <!--badge JavaScript-->
                             </ul>
                         </td>
-                    </tr>
-                    <tr>
                         <td>
                             Libraries:
                             <ul class="badge-container">
@@ -101,19 +99,19 @@
                                         </div>
                                     </a>
                                 </li> <!--badge jQuery-->
-                                <li class="badge">
-                                    <a href="http://julian.com/research/velocity/" title="Velocity.js">
+                                <a href="http://julian.com/research/velocity/" title="Velocity.js">
+                                    <li class="badge">
                                         <div class="inner">
                                             <div class="center">Velocity.js</div>
                                         </div>
-                                    </a>
-                                </li> <!--badge Velocity.js-->
+                                    </li>
+                                </a> <!--badge Velocity.js-->
                             </ul>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            Environments:
+                        <td colspan=2>
+                            Environments and miscellaneous:
                             <ul class="badge-container">
                                 <li class="badge">
                                     <a href="https://netbeans.org/" title="NetBeans">
@@ -160,13 +158,47 @@
                                         </div>
                                     </a>
                                 </li> <!--badge Windows-->
+                                <a href="http://en.wikipedia.org/wiki/Object-oriented_programming" title="OOP"><li class="badge">
+                                    <div class="inner">
+                                        <div class="center">OOP</div>
+                                    </div>
+
+                                    </li>
+                                </a><!--badge OOP Principles-->
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            Familiar with:
+                            <ul class="badge-container">
                                 <li class="badge">
-                                    <a href="http://en.wikipedia.org/wiki/Object-oriented_programming" title="OOP">
+                                    <a href="https://www.mysql.com" title="MySQL">
+                                        <div class="background" style="background-image: url('images/mysql.png')"></div>
                                         <div class="inner">
-                                            <div class="center">OOP</div>
+                                            <img src="images/mysql.png">
+                                            <div>MySQL</div>
                                         </div>
                                     </a>
-                                </li> <!--badge OOP Principles-->
+                                </li> <!--MySQL-->
+                                <li class="badge">
+                                    <a href="" title="">
+                                        <div class="background" style="background-image: url('images/*.png')"></div>
+                                        <div class="inner">
+                                            <img src="images/*.png">
+                                            <div></div>
+                                        </div>
+                                    </a>
+                                </li> <!---->
+                                <li class="badge">
+                                    <a href="" title="">
+                                        <div class="background" style="background-image: url('images/*.png')"></div>
+                                        <div class="inner">
+                                            <img src="images/*.png">
+                                            <div></div>
+                                        </div>
+                                    </a>
+                                </li> <!---->
                             </ul>
                         </td>
                     </tr>
@@ -181,10 +213,16 @@
                     <h5><u>Team Lead of Department of Maintaning Servers</u>, September 2009 – May 2015</h5>
                     <h5>Key Results:</h5>
                     <ul class="normal">                    
-                        <li>Managed a team of specialists to provide  trouble-free operation of customers retail servers.</li>
-                        <li>Helped to maintain campus Windows 2003 servers.</li>
-                        <li>Helped to set up and maintain campus Kerio WinRoute and Control network protection products.</li>
-                        <li>Helped to maintain campus LAN and provided user support.</li>
+                        <li>Managed a team of specialists to provide trouble-free operation of customers retail servers.</li>
+                        <li>Created plans and schedules to maintain customers servers</li>
+                        <li>Organized emergency servers maintenance</li>
+                        <li>Verified team member's work</li>
+                        <li>Checked if the whole system was online</li>
+                        <li>Created reports and reported to manager</li>
+                        <li>Controled branch software supplies</li>
+                        <li>Helped to maintain branch Windows 2003 servers, branch domain controller servers</li>
+                        <li>Helped to set up and maintain campus Kerio WinRoute and Kerio Control network protection products</li>
+                        <li>Helped to maintain campus LAN and provided branch user support</li>
                     </ul>
                 </div>
             </section> <!--experience-->
@@ -202,9 +240,9 @@
                 </div>
                 <div class="border-b">
                     <h4>Certificates</h4>
-                    <h5>ORACLE CERTIFIED ASSOCIATE, JAVA SE 7 PROGRAMMER — Dec, 2014</h5>
+                    <h5>ORACLE CERTIFIED ASSOCIATE, JAVA SE 7 PROGRAMMER — December, 2014</h5>
                 </div>
-                <div class="border-b">
+                <div>
                     <h4>Projects</h4>
                     <ol class="normal">
                         <li>
@@ -226,7 +264,7 @@
                             <small>
                                 <i>
                                     <u>Link:</u><br>
-                                    <a href="https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals" title="Go To GitHub Project Page">https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals</a><br>
+                                    <u><a href="https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals" title="Go To GitHub Project Page">https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals</a></u><br>
                                     <u>Language:</u> HTML, CSS, JavaScript<br>
                                     <u>IDE:</u> Adobe Brackets 1.3.0<br>
                                     <u>Description:</u><br>

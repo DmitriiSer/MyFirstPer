@@ -75,6 +75,7 @@ h6 {
     font-size: small;
     letter-spacing: 0.13rem;
 }
+small > i { word-wrap: break-word; }
 // change view button 
 #changeView {
     position: fixed;
@@ -172,7 +173,7 @@ table {
     td {
         //padding-bottom: 2*$badge-margin;
         text-align: center;
-        //border: 1px solid red;
+        border: 1px solid black;
     }
 }
 //ul.badge-container
@@ -230,7 +231,6 @@ table {
         margin: auto;
         width: $badge-img-size;
     }
-    //div { border: 1px solid black; }
 }
 .badge:hover {
     @include background(lighten($c5, 5));
@@ -258,4 +258,7 @@ table {
         @include background(transparent);
         .background { display: block }
     }
+}
+@media print {    
+    .no-print, .no-print * { display: none !important; }
 }
