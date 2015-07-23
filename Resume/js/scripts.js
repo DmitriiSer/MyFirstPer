@@ -10,7 +10,21 @@ var Helpers = {
         return backgroundColors[rnd(0,4)];
     },
     // transform RGB color to HEX value
-    rgbToHex: function(r,g,b) { return "#" + r.toString(16) + g.toString(16) + b.toString(16); },
+    rgbToHex: function(r,g,b,a) {
+        if (r != undefined && g === undefined && b === undefined && a === undefined) {
+            if (r.includes("rgb")) {
+                r = r.split(/[(),]+/);
+                g = parseInt(r[2]);
+                b = parseInt(r[3]);
+                a = parseInt(r[4]);
+                r = parseInt(r[1]);
+            }
+        }
+        if (a == "NaN")
+            return "#" + r.toString(16) + g.toString(16) + b.toString(16) + a.toString(16);
+        else
+            return "#" + r.toString(16) + g.toString(16) + b.toString(16);
+    },
     // get text width and height depending on font
     getTextWidth: function(text, font) {
         // re-use canvas object for better performance
@@ -34,7 +48,7 @@ var Helpers = {
         if (obj.width() != undefined && obj.width() > 0 &&
             obj.height() != undefined && obj.height() > 0) {
             var text = obj[0].innerText,
-                font = obj.css("font-family").split(/[\s,']+/),                
+                font = obj.css("font-family").split(/[\s,']+/),
                 fontSize = parseInt(font[2]),
                 fontFamily = font[1],
                 fontType = font[3];
@@ -111,20 +125,23 @@ var Helpers = {
     },
     // responsive badges
     responsiveBadges: function(obj) {        
-        var bdgs = obj.find(".badge");
-        bdgs.each(function(n, eBdg) {
-            /*
-            console.clear();
-            console.log(
-                "6: " + Helpers.badgeInACellThreshold(6) + ",\r\n" +
-                "5: " + Helpers.badgeInACellThreshold(5) + ",\r\n" +
-                "4: " + Helpers.badgeInACellThreshold(4) + ",\r\n" +
-                "3: " + Helpers.badgeInACellThreshold(3) + "\r\n" +
-                "1: " + Helpers.badgeInACellThreshold(1) + "\r\n" +
-                "obj.width() = " + obj.width()
-            );
-            */
-            Helpers.setBadgeSize($(eBdg), 80);
+        obj.find(".badge").each(function(n, eBdg) {
+            var bdg = $(eBdg);
+            var parents = $(eBdg).parents(".badge-container");
+            // check if there is an attribute 'shape'
+            if (bdg.is("[shape]") && bdg.attr("shape") == "square") {
+                bdg.css("borderRadius", "0");
+            } else if (parents.is("[shape]") && parents.attr("shape") == "square") {
+                bdg.css("borderRadius", "0");
+            }
+            // check if there is an attribute 'size'
+            if (bdg.is("[size]")) {
+                Helpers.setBadgeSize(bdg, bdg.attr("size"));
+            } else if (parents.is("[size]")) {
+                Helpers.setBadgeSize(bdg, bdg.parents(".badge-container").attr("size"));
+            } else {
+                Helpers.setBadgeSize($(eBdg), 80);
+            }
             //Helpers.setBadgeSize($(eBdg), 128);
             /*
             if (obj.width() > Helpers.badgeInACellThreshold(6)) {
@@ -177,10 +194,8 @@ var EventHandlers = {
     // window resize event handler
     resizeEventHandler: function () {
         console.log("window.resize()");
-        //console.log("resize: body height = " + $("body").height());
-        var table = $("table");
         // responsive table
-        Helpers.responsiveTable(table);
+        Helpers.responsiveTable($("table"));
     },
     // changeView button click event handler
     changeViewClickEventHandler: function() {
@@ -217,13 +232,14 @@ var EventHandlers = {
             // if there is a badge picture
             bdgInnerDiv.velocity({ opacity: 0 }, animationDuration);
         } else {
-            console.log(bdgImg[0]);
             // else there is no a badge picture
+            var bdgInnerDivColor = Helpers.rgbToHex($("body").css("backgroundColor"));
             bdgInnerDivWidth = bdgInner.width() * 1.3;
             bdgInnerDivHeight = Math.sqrt(Math.pow(bdg.width(), 2) - Math.pow(bdgInnerDivWidth, 2));                
             bdgInnerDiv.velocity({
                 width: bdgInnerDivWidth,
-                height: bdgInnerDivHeight
+                height: bdgInnerDivHeight,
+                color: bdgInnerDivColor
             }, {
                 duration: animationDuration,
                 progress: function() { Helpers.fitText(bdgInnerDiv); }
@@ -257,9 +273,11 @@ var EventHandlers = {
             bdgInnerDiv.velocity({ opacity: 1 }, animationDuration);
         } else {
             // else there is no a badge picture
+            var bdgInnerDivColor = Helpers.rgbToHex(bdgInnerDiv.css("backgroundColor"));
             bdgInnerDiv.velocity({
                 width: bdgInner.outerWidth(),
-                height: bdgInner.outerWidth() - bdgImgOriginalSize
+                height: bdgInner.outerWidth() - bdgImgOriginalSize,
+                color: bdgInnerDivColor
             }, {
                 duration: animationDuration,
                 progress: function() { Helpers.fitText(bdgInnerDiv); }
@@ -496,5 +514,5 @@ $(function() {
     $(".badge").on("mouseenter", EventHandlers.badgeMouseEnter);// Badge mouse enter event
     $(".badge").on("mouseleave", EventHandlers.badgeMouseLeave);// Badge mouse leave event
     // click changeView button
-    $("#changeView").click();
+    //$("#changeView").click();
 });

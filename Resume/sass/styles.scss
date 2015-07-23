@@ -50,7 +50,7 @@ canvas {
     zIndex: 0;
 }
 // headings
-#{headings()}, h7 {
+#{headings()} {
     margin: 0.5rem;
     font-family: $fontHeaders;
     font-weight: 700;
@@ -97,31 +97,6 @@ small > i { word-wrap: break-word; }
     border-top: $changeView_border_width solid $c3;
     border-right: $changeView_border_width solid $c4;
     border-bottom: $changeView_border_width solid transparent;
-}
-#saveWithStyles {
-    position: fixed;
-    top: 20px;
-    right: 0;
-    $changeView_size: 20px;
-    $changeView_border_width: $changeView_size / 2.5;
-    width: $changeView_size;
-    height: $changeView_size;
-    border-left: $changeView_border_width solid $c3;
-    border-top: $changeView_border_width solid $c3;
-    border-right: $changeView_border_width solid $c4;
-    border-bottom: $changeView_border_width solid $c4;
-}
-#saveWithStyles:hover {
-    position: fixed;
-    top: 20px;
-    right: 0;
-    $changeView_border_width: 25px / 2.5;
-    width: 25px;
-    height: 25px;
-    border-left: $changeView_border_width solid $c3;
-    border-top: $changeView_border_width solid $c3;
-    border-right: $changeView_border_width solid $c4;
-    border-bottom: $changeView_border_width solid $c4;
 }
 // sections
 section {
@@ -194,15 +169,12 @@ table {
     border-collapse: collapse;
     td {
         //padding-bottom: 2*$badge-margin;
-        text-align: center;
-        border: 1px solid black;
+        text-align: center;        
     }
 }
 //ul.badge-container
 .badge-container {
     display: table;
-    //position: relative;
-    max-height: 50vh; //$badge-size; //33vmin; //50%;
     min-height: $badge-size;
     margin: auto;
     padding: 0px;
@@ -221,7 +193,9 @@ table {
     color: invert($pageBackgroundColor);
     text-align: center;
     white-space: nowrap;
-    @include text-shadow(1px 1px 3px lighten(invert($pageBackgroundColor), 50), -1px -1px 3px lighten(invert($pageBackgroundColor), 50));
+    @include text-shadow(
+        1px 1px 40px lighten(invert($pageBackgroundColor), 50),
+        -1px -1px 4px lighten(invert($pageBackgroundColor), 50));
     @include box-shadow(inset 0px 0px $badge-shadow-size $c5, -$badge-shadow-size 0px $badge-shadow-size $c4, $badge-shadow-size 0px $badge-shadow-size $c4);
     border-radius: 50%;
     overflow: hidden;
@@ -253,6 +227,7 @@ table {
         margin: auto;
         width: $badge-img-size;
     }
+    //div { border: 1px solid black;}
 }
 .badge:hover {
     @include background(lighten($c5, 5));
