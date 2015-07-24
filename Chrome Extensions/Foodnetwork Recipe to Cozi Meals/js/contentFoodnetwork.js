@@ -1,6 +1,6 @@
 //var m = "Foodnetwork Recipe to Cozi Meals: ";
 var m = "FRtoCM: ";
-console.info(m + "contentFoodnetwork.js script was loaded");
+console.debug(m + "contentFoodnetwork.js script was loaded");
 
 function waitUntilNotNull(action, done, interval, timeout) {
     if (interval === undefined || typeof interval != 'number')
@@ -23,7 +23,6 @@ function waitUntilNotNull(action, done, interval, timeout) {
 var title = "",
     ingredients = "",
     directions = "";
-
 var titleElem = function() {
     try {
         title = document.getElementsByTagName("h1")[0];
@@ -98,23 +97,4 @@ waitUntilNotNull(
             chrome.extension.sendRequest({ set: "directions", value: directions });
         else // timeout happened and still no 'directions' got
             console.error(m + "Cannot get 'directions' from the page");
-    });
-//
-chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        var out = m; 
-        if (sender.tab) {
-            out += "A new message was received from a content script: ";
-            console.info(out + sender.tab.url);
-            //if message came from an extension        
-        } else {
-            out += "A new message was received from the extension: ";
-            if (request.get == "pageHTML") {
-                console.info(out + "request.get = " + request.get);
-                sendResponse(document.body.innerHTML);
-            } else if (request.console != undefined) {
-                console.info(out + "(INFO): " + request.console);
-                sendResponse("printed");
-            }
-        }
     });

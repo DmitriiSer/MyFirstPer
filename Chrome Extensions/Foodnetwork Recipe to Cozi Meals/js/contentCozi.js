@@ -1,6 +1,6 @@
 //var m = "Foodnetwork Recipe to Cozi Meals: ";
 var m = "FRtoCM: ";
-console.info(m + "'contentCozi.js' script was loaded");
+console.debug(m + "'contentCozi.js' script was loaded");
 
 function insertTextAtCursor(text) {
     var el = document.activeElement;
@@ -149,4 +149,3 @@ var timer = setInterval(function() {
         }
     }
 }, 500);
-
