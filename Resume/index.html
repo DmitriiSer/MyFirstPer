@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="Resume">
     <head>
         <!--meta-->
         <meta charset="utf-8">
@@ -7,9 +7,11 @@
         <link rel="stylesheet" href="styles.css">
         <!--scripts-->
         <script src="http://localhost:35729/livereload.js"></script>
+        <script src="node_modules/angular/angular.js"></script>
         <script src="js/jquery-1.11.3.min.js"></script>
         <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="js/velocity.min.js"></script>
+        <script src="js/app.js"></script>
         <script src="js/scripts.js"></script>
     </head>
     <body>
@@ -36,211 +38,38 @@
                 <div class="border-tb">
                     <h3>Specialties</h3>
                 </div>
-                <table>
-                    <tr>
-                        <td>
-                            Languages:
-                            <ul class="badge-container" size="96">
-                                <li class="badge">
-                                    <a href="http://www.oracle.com/technetwork/java/javase/overview/index.html" title="Java">
-                                        <div class="background" style="background-image: url('images/java.png')"></div>
+                <table ng-controller="BadgeController">
+                    <tr ng-repeat="row in data">
+                        <td colspan="{{(item.colspan != undefined) ? item.colspan : ''}}"
+                            width="{{item.width}}"
+                            ng-repeat="item in row.col">
+                            {{item.name}}:
+                            <ul class="badge-container"
+                                size="{{(item.size) ? item.size : 64}}"
+                                shape="{{(item.shape === undefined) ? '' : item.shape}}">
+                                <li class="badge"
+                                    size="{{(badge.size) ? badge.size : (item.size) ? item.size : 64}}"
+                                    ng-repeat="badge in item.badges">
+                                    <a href="{{badge.href}}" title="{{(badge.tooltip === undefined) ? badge.title : badge.tooltip}}">
+                                        <div class="background"                                             
+                                             style="{{backgroundStyle(badge)}}"
+                                             ng-hide="badge.no_image"></div>
                                         <div class="inner">
-                                            <img src="images/java.png"/>
-                                            <div>Java</div>
+                                            <img ng-hide="badge.no_image" ng-src="{{imageSrc(badge)}}"/>
+                                            <div ng-class="{center: badge.no_image}">{{badge.title}}</div>
                                         </div>
                                     </a>
-                                </li> <!--badge Java-->
-                                <li class="badge">
-                                    <a href="http://www.cplusplus.com/" title="C++">
-                                        <div class="background" style="background-image: url('images/c++.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/c++.png"/>
-                                            <div>C++</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge C++-->
-                                <li class="badge">
-                                    <a href="http://www.w3.org/html/" title="HTML5">
-                                        <div class="background" style="background-image: url('images/html5.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/html5.png"/>
-                                            <div>HTML5</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge HTML5-->
-                                <li class="badge">
-                                    <a href="http://www.w3.org/Style/CSS/" title="CSS3">
-                                        <div class="background" style="background-image: url('images/css3.png')"></div>                    
-                                        <div class="inner">
-                                            <img src="images/css3.png"/>
-                                            <div>CSS3</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge CSS3-->
-                                <li class="badge">
-                                    <a href="http://en.wikipedia.org/wiki/JavaScript" title="JavaScript">
-                                        <div class="background" style="background-image: url('images/javascript.png')"></div>                    
-                                        <div class="inner">
-                                            <img src="images/javascript.png"/>
-                                            <div>JavaScript</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge JavaScript-->
+                                </li>
                             </ul>
-                        </td> <!--Languages-->
-                        <td width=200>
-                            Libraries:
-                            <ul class="badge-container" size="64">
-                                <li class="badge">
-                                    <a href="https://jquery.com/" title="jQuery">
-                                        <div class="background" style="background-image: url('images/jquery.png')"></div>                    
-                                        <div class="inner">
-                                            <img src="images/jquery.png"/>
-                                            <div>jQuery</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge jQuery-->
-                                <a href="http://julian.com/research/velocity/" title="Velocity.js">
-                                    <li class="badge">
-                                        <div class="inner">
-                                            <div class="center">Velocity.js</div>
-                                        </div>
-                                    </li>
-                                </a> <!--badge Velocity.js-->
-                            </ul>
-                        </td> <!--Libraries-->
-                    </tr>
-                    <tr>
-                        <td colspan=2>
-                            Environments:
-                            <ul class="badge-container" size="72">
-                                <li class="badge">
-                                    <a href="https://netbeans.org/" title="NetBeans">
-                                        <div class="background" style="background-image: url('images/netbeans.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/netbeans.png"/>
-                                            <div>NetBeans</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge NetBeans-->
-                                <li class="badge">
-                                    <a href="https://eclipse.org/" title="Eclipse">
-                                        <div class="background" style="background-image: url('images/eclipse.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/eclipse.png"/>
-                                            <div>Eclipse</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge Eclipse-->
-                                <li class="badge">
-                                    <a href="https://www.visualstudio.com" title="Visual Studio">
-                                        <div class="background" style="background-image: url('images/visualstudio.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/visualstudio.png"/>
-                                            <div>Visual Studio</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge Visual Studio-->
-                                <li class="badge">
-                                    <a href="https://git-scm.com/" title="Git">
-                                        <div class="background" style="background-image: url('images/git.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/git.png"/>
-                                            <div>Git</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge Git-->
-                                <li class="badge">
-                                    <a href="https://github.com/DmitriiSer/" title="GitHub">
-                                        <div class="background" style="background-image: url('images/github.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/github.png"/>
-                                            <div>GitHub</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge GitHub-->
-                                <li class="badge">
-                                    <a href="http://www.microsoft.com/windows/" title="Windows">
-                                        <div class="background" style="background-image: url('images/windows.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/windows.png"/>
-                                            <div>Windows</div>
-                                        </div>
-                                    </a>
-                                </li> <!--badge Windows-->
-                            </ul>
-                        </td> <!--Environments-->
-                    </tr>
-                    <tr>
-                        <td colspan=2>
-                            Familiar with:
-                            <ul class="badge-container" size=64 shape="square">
-                                <li class="badge">
-                                    <a href="https://www.mysql.com" title="MySQL">
-                                        <div class="background" style="background-image: url('images/mysql.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/mysql.png">
-                                            <div>MySQL</div>
-                                        </div>
-                                    </a>
-                                </li> <!--MySQL-->
-                                <li class="badge">
-                                    <a href="https://en.wikipedia.org/wiki/Microsoft_SQL_Server" title="Microsoft SQL Server">
-                                        <div class="background" style="background-image: url('images/mssql.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/mssql.png">
-                                            <div>MS SQL</div>
-                                        </div>
-                                    </a>
-                                </li> <!--MS SQL-->
-                                <a href="http://en.wikipedia.org/wiki/Object-oriented_programming" title="Object Oriented Principles">
-                                    <li class="badge">
-                                        <div class="inner">
-                                            <div class="center">OOP</div>
-                                        </div>
-                                    </li>
-                                </a><!--badge OOP Principles-->
-                                <a href="https://en.wikipedia.org/wiki/Software_design_pattern" title="Design Patterns"><li class="badge" size=96>
-                                    <div class="inner">
-                                        <div class="center">Design Patterns</div>
-                                    </div>
-                                    </li>
-                                </a><!--badge Design Patterns-->
-                                <li class="badge">
-                                    <a href="" title="Linux">
-                                        <div class="background" style="background-image: url('images/linux.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/linux.png">
-                                            <div>Linux</div>
-                                        </div>
-                                    </a>
-                                </li> <!--Linux-->
-                                <li class="badge">
-                                    <a href="" title="Mac OS X">
-                                        <div class="background" style="background-image: url('images/macosx.png')"></div>
-                                        <div class="inner">
-                                            <img src="images/macosx.png">
-                                            <div>Mac OS X</div>
-                                        </div>
-                                    </a>
-                                </li> <!--Mac OS X-->
-                                <!--<li class="badge">
-<a href="" title="">
-<div class="background" style="background-image: url('images/*.png')"></div>
-<div class="inner">
-<img src="images/*.png">
-<div></div>
-</div>
-</a>
-</li> <!---->
-                            </ul>
-                        </td> <!--Familiar with-->
+                        </td>
                     </tr>
                 </table>
             </section>
+            <div class="page-footer">This resume available online by this link: </div>
+            <div class="page-break"></div>
             <!--objective-->
             <section id="experience">
-                <div class="border-tb">
+                <div class="border-b">
                     <h3>Professional Experiense</h3>
                 </div>
                 <div>
@@ -280,97 +109,36 @@
                 </div>
                 <div>
                     <h4>Projects</h4>
-                    <ol class="normal">
-                        <li>
-                            <h5>AdvancedCarousel</h5>
+                    <ol class="normal" ng-controller="ProjectsController">
+                        <li ng-repeat="project in filtered = (data | filter: query)">
+                            <h5>{{project.title}}</h5>
                             <small>
                                 <i>
-                                    <u>Link:</u><br>
-                                    <u><a href="https://github.com/DmitriiSer/WebProjects/tree/master/AdvancedCarousel" title="Go To GitHub Project Page">https://github.com/DmitriiSer/WebProjects/tree/master/AdvancedCarousel</a></u><br>
-                                    <u>Language:</u> HTML, CSS, JavaScript<br>
-                                    <u>IDE:</u> Adobe Brackets 1.3.0<br>
-                                    <u>Libraries:</u> jQuery, jQuery-UI, Velocity.js<br>
-                                    <u>Description:</u><br>
+                                    <div ng-show="project.link && project.tooltip">
+                                        <u>Link:</u><br>
+                                        <u><a href="{{project.link}}" title="{{project.tooltip}}">{{project.link}}</a></u>
+                                    </div>
+                                    <div class="technologie" 
+                                         ng-repeat="techs in project.techs">
+                                        <div class="technologie-title-span"
+                                             ng-show="techs.length > 0"><u>{{techTitles[$index]}}:</u></div>
+                                        <span class="technologie-span"
+                                              ng-class="{first:$first}"
+                                              style="padding-left: {{(tech.no_image) ? '10' : '0'}}px"
+                                              ng-repeat="tech in techs">
+                                            <img class="technologie-badge"
+                                                 title="{{tech.title}}"
+                                                 ng-src="{{imageSrc(tech)}}"
+                                                 ng-hide="{{tech.no_image}}"/>
+                                            <span title="{{tech.title}}"
+                                                  style="display: inline-block; height: 24px; vertical-align: {{((tech.no_image) ? 'sub' : 'initial')}}">{{tech.title}}</span>
+                                        </span>
+                                    </div>
+                                    <div ng-show="project.description"><u>Description:</u><br></div>
                                 </i>
                             </small>
-                            <h6>Representation of an image carousel</h6>
-                        </li><hr>
-                        <li>
-                            <h5>Foodnetwork Recipe to Cozi Meals (Google Chrome/Opera Extension)</h5>
-                            <small>
-                                <i>
-                                    <u>Link:</u><br>
-                                    <u><a href="https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals" title="Go To GitHub Project Page">https://github.com/DmitriiSer/WebProjects/tree/master/Chrome%20Extensions/Foodnetwork%20Recipe%20to%20Cozi%20Meals</a></u><br>
-                                    <u>Language:</u> HTML, CSS, JavaScript<br>
-                                    <u>IDE:</u> Adobe Brackets 1.3.0<br>
-                                    <u>Description:</u><br>
-                                </i>
-                            </small>
-                            <h6>Chrome/Opera extension that allows to transfer the whole recipe from Foodnetwork recipe page to Cozi Meals recipe by pressing a button in popup window of the extension</h6>
-                        </li><hr>                      
-                        <li>
-                            <h5>Resume</h5>
-                            <small>
-                                <i>
-                                    <u>Link:</u><br>
-                                    <u><a href="https://github.com/DmitriiSer/WebProjects/tree/master/Resume" title="Go To GitHub Project Page">https://github.com/DmitriiSer/WebProjects/tree/master/Resume</a></u><br>
-                                    <u>Languages:</u> HTML, CSS, JavaScript<br>
-                                    <u>IDE:</u> Adobe Brackets 1.3.0<br>
-                                    <u>Libraries:</u> jQuery, jQuery-UI, Velocity.js<br>
-                                    <u>Description:</u><br>
-                                </i>
-                            </small>
-                            <h6>Animated version of this resume</h6>
-                        </li><hr>
-                        <li>
-                            <h5>CheapFly</h5>
-                            <small>
-                                <i>
-                                    <u>Language:</u> C++/CLI (.NET)<br>
-                                    <u>IDE:</u> Visual Studio<br>
-                                    <u>Libraries:</u> Boost (ASIO)<br>
-                                    <u>DBs:</u> MySQL<br>
-                                    <u>Description:</u><br>
-                                </i>
-                            </small>
-                            <h6>
-                                This project is a try to create an application that would find cheapest flights around the world using different search engines (e.g Expedia, RyanAir, etc.). Is consist of 2 parts: the server and the client. The server receives request from client app and pushs/fetches entries to DB which is MySQL instance. The client is a desktop applcation to provide UI to users.
-                            </h6>
-                        </li><hr>
-                        <li>
-                            <h5>AELS Sniffer</h5> 
-                            <small>
-                                <i>
-                                    <u>Language:</u> C++<br>
-                                    <u>IDE:</u> Borland C++ Builder 5/6<br>
-                                    <u>Libraries:</u> WinPcap<br>
-                                    <u>Description:</u><br>
-                                </i>
-                            </small>
-                            <h6>Simple network traffic analyzer</h6>
-                        </li><hr>
-                        <li>
-                            <h5>Tetraedroid</h5>
-                            <small>
-                                <i>
-                                    <u>Language:</u> C++/CLI (.NET)<br>
-                                    <u>IDE:</u> Visual Studio<br>
-                                    <u>Libraries:</u> DirectX (Direct3D)<br>
-                                    <u>Description:</u><br>
-                                </i>
-                            </small>
-                            <h6>Compound of 2 tetrahedra spining around it's different axis. Made on Windows using Visual C++ and DriectX APIs.</h6>
-                        </li><hr>
-                        <li>
-                            <h5>PDFToXLS</h5>
-                            <small>
-                                <i>
-                                    <u>Language:</u> C++/CLI (.NET)<br>
-                                    <u>IDE:</u> Visual Studio<br>
-                                    <u>Description:</u><br>
-                                </i>
-                            </small>
-                            <h6>Application that allowes to create XLS spreadsheet file from PDF using an online service. Basicaly it creates HTTPRequests to that web service, uploads a file and gets the result file back.</h6>
+                            <h6 ng-show="project.description">{{project.description}}</h6>
+                            <hr ng-show="$index < filtered.length - 1">
                         </li>
                     </ol>
                 </div>

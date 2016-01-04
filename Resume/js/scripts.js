@@ -214,7 +214,7 @@ var EventHandlers = {
     badgeMouseEnter: function(e) {
         var animationDuration = "fast";
         var bdg = $(this),
-            bdgBackground = bdg.find(".background"),
+            bdgBackground = bdg.find(".background"),            
             bdgInner = bdg.find(".inner"),
             bdgImg = bdg.find("img"),
             bdgInnerDiv = bdg.find(".inner div");
@@ -228,10 +228,10 @@ var EventHandlers = {
         }
         bdgBackground.velocity({ blur: 0 }, animationDuration);
         bdgImg.velocity({ width: "100%", height : "100%", opacity: 0 }, animationDuration);
-        if (bdgImg[0] != undefined) {
+        if (bdgImg[0] != undefined && getComputedStyle(bdgImg[0]).display != "none") {
             // if there is a badge picture
             bdgInnerDiv.velocity({ opacity: 0 }, animationDuration);
-        } else {
+        } else {            
             // else there is no a badge picture
             var bdgInnerDivColor = Helpers.rgbToHex($("body").css("backgroundColor"));
             bdgInnerDivWidth = bdgInner.width() * 1.3;
@@ -268,7 +268,7 @@ var EventHandlers = {
             width: bdgImgSizePercentage + "%",
             height : bdgImgSizePercentage + "%",
             opacity: 1 }, animationDuration);
-        if (bdgImg[0] != undefined) {
+        if (bdgImg[0] != undefined  && getComputedStyle(bdgImg[0]).display != "none") {
             // if there is a badge picture
             bdgInnerDiv.velocity({ opacity: 1 }, animationDuration);
         } else {
